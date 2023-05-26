@@ -1,0 +1,46 @@
+[package]
+name = "ebds-fuzz"
+version = "0.0.0"
+publish = false
+edition = "2021"
+
+[package.metadata]
+cargo-fuzz = true
+
+[dependencies]
+libfuzzer-sys = "0.4"
+
+[dependencies.ebds]
+path = ".."
+features = ["arbitrary", "std"]
+
+# Prevent this from interfering with workspaces
+[workspace]
+members = ["."]
+
+[profile.release]
+debug = 1
+
+[[bin]]
+name = "fuzz_method"
+path = "fuzz_targets/fuzz_method.rs"
+test = false
+doc = false
+
+[[bin]]
+name = "fuzz_omnibus_reply"
+path = "fuzz_targets/fuzz_omnibus_reply.rs"
+test = false
+doc = false
+
+[[bin]]
+name = "fuzz_omnibus_reply_from_bytes"
+path = "fuzz_targets/fuzz_omnibus_reply_from_bytes.rs"
+test = false
+doc = false
+
+[[bin]]
+name = "fuzz_build_message"
+path = "fuzz_targets/fuzz_build_message.rs"
+test = false
+doc = false

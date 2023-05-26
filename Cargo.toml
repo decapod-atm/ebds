@@ -1,0 +1,37 @@
+[package]
+name = "ebds"
+version = "0.1.0"
+edition = "2021"
+authors = ["EBDS Rust Developers"]
+description = "Messages and related types for implementing the EBDS serial communication protocol"
+keywords = ["no-std", "serial", "ebds", "bill-acceptor", "bill-validator"]
+categories = ["no-std"]
+repository = "https://github.com/ebds-rs/ebds"
+license = "MIT"
+
+[dependencies]
+bitfield = "0.14"
+log = { version = "0.4", default-features = false }
+serde = { version = "1.0", default-features = false, features = ["derive"] }
+serde_json = { version = "1.0", default-features = false, features = ["alloc"] }
+serialport = { version = "4.2", default-features = false }
+arbitrary = { version = "1", optional = true }
+parking_lot = "0.12"
+
+[features]
+default = ["sc", "usd"]
+e2e = []
+s2k = []
+sc = []
+std = []
+arbitrary = ["arbitrary/derive"]
+
+# Currency sets
+amd = []
+aud = []
+cad = []
+cny = []
+gbp = []
+jpy = []
+mxn = []
+usd = []
