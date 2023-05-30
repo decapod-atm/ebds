@@ -1,6 +1,6 @@
 use crate::std::fmt;
 
-use crate::{bool_enum, StandardDenomination, OPEN_BRACE, CLOSE_BRACE};
+use crate::{bool_enum, StandardDenomination, CLOSE_BRACE, OPEN_BRACE};
 
 mod document_status;
 
