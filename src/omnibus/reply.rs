@@ -11,7 +11,7 @@ use crate::{
     QueryVariantPartNumberReply, SetEscrowTimeoutReply, StandardDenomination,
 };
 
-pub(crate) mod index {
+pub mod index {
     use crate::index::DATA;
 
     pub const DEVICE_STATE: usize = DATA;

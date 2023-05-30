@@ -17,7 +17,7 @@ bool_enum!(
     r"Whether the device successfully proccessed the Clear Audit Data Request."
 );
 
-mod index {
+pub mod index {
     pub const ACKNAK: usize = 10;
     pub const PASS_FAIL: usize = 10;
 }

@@ -12,7 +12,7 @@ use crate::{
 
 use super::FlashDownloadMessage;
 
-mod index {
+pub mod index {
     pub const PACKET0: usize = 3;
     pub const PACKET1: usize = 4;
     pub const DATA0: usize = 5;

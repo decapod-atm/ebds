@@ -4,7 +4,7 @@ use crate::{
     MessageType,
 };
 
-mod index {
+pub mod index {
     pub const STATUS: usize = 7;
 }
 

@@ -139,7 +139,7 @@ impl fmt::Display for BaseDenomination {
     }
 }
 
-mod index {
+pub mod index {
     use crate::{BaseDenomination, BaseValue, Exponent, ISOCode};
 
     pub const DENOM: usize = 10;

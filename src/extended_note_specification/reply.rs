@@ -63,7 +63,7 @@ impl From<&ExtendedNoteReply> for DocumentStatus {
     }
 }
 
-mod index {
+pub mod index {
     use super::{BaseValue, Exponent, ISOCode};
 
     pub const EXTENDED: usize = 10;

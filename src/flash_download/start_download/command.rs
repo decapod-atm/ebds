@@ -3,7 +3,7 @@ use crate::{
     MessageType,
 };
 
-mod index {
+pub mod index {
     pub const DATA2: usize = 5;
 }
 

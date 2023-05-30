@@ -4,7 +4,7 @@ use crate::{
     ExtendedNoteReporting, MessageOps, MessageType, OmnibusCommandOps,
 };
 
-mod index {
+pub mod index {
     pub const NOTE_INDEX: usize = 7;
 }
 

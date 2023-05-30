@@ -6,7 +6,7 @@ use crate::{
     MessageOps, MessageType,
 };
 
-mod index {
+pub mod index {
     pub const DATA3: usize = 6;
 }
 

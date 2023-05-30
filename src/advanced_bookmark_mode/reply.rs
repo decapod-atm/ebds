@@ -7,7 +7,7 @@ use crate::{
     MessageType, OmnibusReplyOps,
 };
 
-mod index {
+pub mod index {
     pub const ACKNAK: usize = 10;
 }
 

@@ -8,7 +8,7 @@ use crate::{
 };
 
 #[allow(dead_code)]
-mod index {
+pub mod index {
     pub const DATA0: usize = 3;
     pub const BAUD_RATE: usize = 3;
 }

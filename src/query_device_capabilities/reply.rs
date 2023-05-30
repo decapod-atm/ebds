@@ -6,7 +6,7 @@ use crate::{
     MessageOps, MessageType, CLOSE_BRACE, OPEN_BRACE,
 };
 
-mod index {
+pub mod index {
     pub const CAP0: usize = 3;
     pub const CAP1: usize = 4;
     pub const CAP2: usize = 5;

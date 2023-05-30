@@ -706,8 +706,7 @@ mod tests {
         assert_eq!(Sign::from(b'+'), sign_pos);
         assert_eq!(Sign::from(b'-'), sign_neg);
 
-        for i in 0..=u8::MAX {
-            let b = i as u8;
+        for b in 0..=u8::MAX {
             if b != b'-' {
                 assert_eq!(Sign::from(b), sign_pos);
             }
@@ -734,12 +733,12 @@ mod tests {
             assert_eq!(Exponent::from([i]), exp_def);
 
             for j in 0..=u8::MAX {
-                if i == b'+' && j >= b'0' && j <= b'9' {
+                if i == b'+' && (b'0'..=b'9').contains(&j) {
                     assert_eq!(
                         Exponent::from([i, j]),
                         Exponent(std::str::from_utf8(&[j]).unwrap().parse::<u8>().unwrap())
                     );
-                } else if i < b'0' || i > b'9' || j < b'0' || j > b'9' {
+                } else if !(b'0'..=b'9').contains(&i) || !(b'0'..=b'9').contains(&j) {
                     // Check that values outside the valid range are parsed as the default value
                     assert_eq!(
                         Exponent::from([i, j]),
@@ -824,7 +823,7 @@ mod tests {
         ];
 
         for c in 0..=u8::MAX {
-            if c >= 32 && c <= 126 {
+            if (32..=126).contains(&c) {
                 let ascii_index = (c - 32) as usize;
                 let ascii_val = ascii_table[ascii_index];
 

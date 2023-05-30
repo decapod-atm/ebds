@@ -17,7 +17,7 @@ mod bitmask {
     pub const ENABLE_NOTE: u8 = 0b111_1111;
 }
 
-mod index {
+pub mod index {
     pub const ENABLE_NOTE: usize = 7;
 }
 
