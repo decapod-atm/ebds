@@ -10,7 +10,7 @@ use crate::{
     banknote::NoteTableItem,
     denomination::{Denomination, StandardDenomination, StandardDenominationFlag},
     method::Method,
-    OPEN_BRACE, CLOSE_BRACE,
+    CLOSE_BRACE, OPEN_BRACE,
 };
 
 /// Container for cash inserted into the bill acceptor
@@ -322,7 +322,11 @@ impl Default for BillAcceptorConfig {
 
 impl fmt::Display for BillAcceptorConfig {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{OPEN_BRACE}\"currency\":\"{}\"{CLOSE_BRACE}", self.currency)
+        write!(
+            f,
+            "{OPEN_BRACE}\"currency\":\"{}\"{CLOSE_BRACE}",
+            self.currency
+        )
     }
 }
 
