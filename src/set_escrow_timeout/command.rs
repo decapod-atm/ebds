@@ -3,7 +3,7 @@ use crate::{
     len::SET_ESCROW_TIMEOUT_COMMAND, ExtendedCommand, ExtendedCommandOps, MessageOps, MessageType,
 };
 
-mod index {
+pub mod index {
     pub const NOTES: usize = 7;
     pub const BARCODES: usize = 8;
 }

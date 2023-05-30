@@ -7,7 +7,7 @@ use crate::{
     MessageType, OmnibusReply,
 };
 
-mod index {
+pub mod index {
     pub const DATA: usize = 4;
 }
 

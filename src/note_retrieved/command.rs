@@ -3,7 +3,7 @@ use crate::{
     len::NOTE_RETRIEVED_COMMAND, ExtendedCommand, ExtendedCommandOps, MessageOps, MessageType,
 };
 
-mod index {
+pub mod index {
     pub const STATUS: usize = 7;
 }
 

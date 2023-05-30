@@ -79,7 +79,7 @@ impl fmt::Display for ExtendedCommand {
     }
 }
 
-mod index {
+pub mod index {
     pub const SUBTYPE: usize = 3;
 }
 

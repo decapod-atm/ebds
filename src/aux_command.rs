@@ -81,7 +81,7 @@ impl fmt::Display for AuxCommand {
     }
 }
 
-pub(crate) mod index {
+pub mod index {
     pub const COMMAND: usize = 5;
 }
 

@@ -7,7 +7,7 @@ use crate::{
     MessageOps, MessageType,
 };
 
-mod index {
+pub mod index {
     pub const CRC_BEGIN: usize = 3;
     pub const CRC_END: usize = 7;
 }

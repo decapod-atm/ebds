@@ -14,7 +14,7 @@ bool_enum!(
     "Indicates success(0x01) / failure(0x00) of the NoteRetrievedCommand"
 );
 
-pub(crate) mod index {
+pub mod index {
     pub const ACKNAK: usize = 10;
     pub const EVENT: usize = 10;
 }

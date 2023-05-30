@@ -282,7 +282,7 @@ bool_enum!(
 "
 );
 
-pub(crate) mod index {
+pub mod index {
     use crate::index::DATA;
 
     pub const DENOMINATION: usize = DATA;

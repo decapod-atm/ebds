@@ -3,7 +3,7 @@ use crate::{
     MiscDeviceState, ModelNumber,
 };
 
-mod index {
+pub mod index {
     pub const SUBTYPE: usize = 3;
     pub const DEVICE_STATE: usize = SUBTYPE + 1;
     pub const DEVICE_STATUS: usize = SUBTYPE + 2;

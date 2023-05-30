@@ -7,7 +7,7 @@ use crate::{
     PartVersion, ProjectNumber,
 };
 
-mod index {
+pub mod index {
     pub const PROJECT_NUM: usize = 3;
     pub const VERSION: usize = 9;
 }
