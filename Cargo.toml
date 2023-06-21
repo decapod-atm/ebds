@@ -1,6 +1,6 @@
 [package]
 name = "ebds"
-version = "0.1.2"
+version = "0.1.3"
 edition = "2021"
 authors = ["EBDS Rust Developers"]
 description = "Messages and related types for implementing the EBDS serial communication protocol"
