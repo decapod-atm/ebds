@@ -122,7 +122,7 @@ impl From<DeviceState> for HardwareState {
 impl From<DeviceStateFlags> for HardwareState {
     fn from(dev_state: DeviceStateFlags) -> Self {
         match dev_state {
-            DeviceStateFlags::Disconnected | DeviceStateFlags::CashBoxRemoved => Self::Missing,
+            DeviceStateFlags::Disconnected | DeviceStateFlags::CashBoxRemoved => Self::Warning,
             DeviceStateFlags::PowerUp
             | DeviceStateFlags::Initialize
             | DeviceStateFlags::Download
