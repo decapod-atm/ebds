@@ -401,7 +401,6 @@ impl fmt::Display for JsonRpcResponse {
 
 #[cfg(test)]
 mod tests {
-    #[cfg(not(feature = "std"))]
     use alloc::string::ToString;
 
     use super::*;
@@ -431,11 +430,35 @@ mod tests {
         assert_eq!(serde_json::to_string(&payload)?, expected);
         assert_eq!(serde_json::from_str::<HalPayload>(expected)?, payload);
 
+        #[cfg(feature = "std")]
+        println!(
+            "{}",
+            serde_json::to_string(&JsonRpcRequest::new(Method::Unknown, payload))?
+        );
+
         let payload = HalPayload::CashInsertionEvent(CashInsertionEvent::new(Method::Accept, 42));
         let expected = "{\"event\":\"ACCEPT\",\"amount\":42}";
 
         assert_eq!(serde_json::to_string(&payload)?, expected);
         assert_eq!(serde_json::from_str::<HalPayload>(expected)?, payload);
+
+        #[cfg(feature = "std")]
+        println!(
+            "{}",
+            serde_json::to_string(&JsonRpcRequest::new(Method::Stack, payload))?
+        );
+
+        let payload = HalPayload::CashInsertionEvent(CashInsertionEvent::new(Method::Reject, 42));
+        let expected = "{\"event\":\"REJECT\",\"amount\":42}";
+
+        assert_eq!(serde_json::to_string(&payload)?, expected);
+        assert_eq!(serde_json::from_str::<HalPayload>(expected)?, payload);
+
+        #[cfg(feature = "std")]
+        println!(
+            "{}",
+            serde_json::to_string(&JsonRpcRequest::new(Method::Reject, payload))?
+        );
 
         let payload = HalPayload::DispenseRequest(DispenseRequest::new(42, Currency::USD));
         let expected = "{\"amount\":42,\"currency\":\"USD\"}";
@@ -443,11 +466,23 @@ mod tests {
         assert_eq!(serde_json::to_string(&payload)?, expected);
         assert_eq!(serde_json::from_str::<HalPayload>(expected)?, payload);
 
+        #[cfg(feature = "std")]
+        println!(
+            "{}",
+            serde_json::to_string(&JsonRpcRequest::new(Method::Dispense, payload))?
+        );
+
         let payload = HalPayload::BillAcceptorConfig(BillAcceptorConfig::new(Currency::USD));
         let expected = "{\"currency\":\"USD\"}";
 
         assert_eq!(serde_json::to_string(&payload)?, expected);
         assert_eq!(serde_json::from_str::<HalPayload>(expected)?, payload);
+
+        #[cfg(feature = "std")]
+        println!(
+            "{}",
+            serde_json::to_string(&JsonRpcRequest::new(Method::Accept, payload))?
+        );
 
         let payload = HalPayload::HardwareStatus(HardwareStatus::new(
             HardwareComponent::BAU,
@@ -459,6 +494,12 @@ mod tests {
 
         assert_eq!(serde_json::to_string(&payload)?, expected);
         assert_eq!(serde_json::from_str::<HalPayload>(expected)?, payload);
+
+        #[cfg(feature = "std")]
+        println!(
+            "{}",
+            serde_json::to_string(&JsonRpcRequest::new(Method::Status, payload))?
+        );
 
         Ok(())
     }
