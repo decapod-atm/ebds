@@ -51,6 +51,7 @@ extern crate bitfield;
 #[cfg(not(feature = "std"))]
 pub(crate) use core as std;
 #[cfg(feature = "std")]
+#[allow(clippy::single_component_path_imports)]
 pub(crate) use std;
 
 use std::{fmt, ops::Not};
