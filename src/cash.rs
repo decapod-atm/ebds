@@ -345,13 +345,23 @@ impl DispenseRequest {
     pub const fn new(amount: u32, currency: Currency) -> Self {
         Self { amount, currency }
     }
+
+    /// Gets the amount.
+    pub const fn amount(&self) -> u32 {
+        self.amount
+    }
+
+    /// Gets the [Currency].
+    pub const fn currency(&self) -> Currency {
+        self.currency
+    }
 }
 
 impl fmt::Display for DispenseRequest {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(
             f,
-            "{OPEN_BRACE}\"amount\":{},\"currency\":\"{}\"{CLOSE_BRACE}",
+            r#"{{"amount":{},"currency":"{}"}}"#,
             self.amount, self.currency
         )
     }

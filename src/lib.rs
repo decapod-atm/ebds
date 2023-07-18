@@ -42,7 +42,6 @@
 //! ebds = { version = "0.1", features = ["std"] }
 //! ```
 
-#[cfg(not(feature = "std"))]
 #[macro_use(format)]
 extern crate alloc;
 
