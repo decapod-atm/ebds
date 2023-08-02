@@ -2,13 +2,14 @@ use crate::std;
 use std::fmt;
 
 use crate::{
-    banknote::*, impl_default, impl_from_for_omnibus_reply, impl_message_ops,
-    impl_omnibus_reply_ops, len::OMNIBUS_REPLY, status::*, AdvancedBookmarkModeReply,
-    ClearAuditDataRequestAck, ClearAuditDataRequestResults, ExtendedNoteInhibitsReplyAlt,
-    ExtendedNoteReply, MessageOps, MessageType, NoteRetrievedEvent, NoteRetrievedReply,
-    QueryApplicationIdReply, QueryApplicationPartNumberReply, QueryBootPartNumberReply,
-    QueryDeviceCapabilitiesReply, QueryValueTableReply, QueryVariantIdReply, QueryVariantNameReply,
-    QueryVariantPartNumberReply, SetEscrowTimeoutReply, StandardDenomination,
+    banknote::*, cash::CurrencyDenomination, impl_default, impl_from_for_omnibus_reply,
+    impl_message_ops, impl_omnibus_reply_ops, len::OMNIBUS_REPLY, status::*,
+    AdvancedBookmarkModeReply, ClearAuditDataRequestAck, ClearAuditDataRequestResults,
+    ExtendedNoteInhibitsReplyAlt, ExtendedNoteReply, MessageOps, MessageType, NoteRetrievedEvent,
+    NoteRetrievedReply, QueryApplicationIdReply, QueryApplicationPartNumberReply,
+    QueryBootPartNumberReply, QueryDeviceCapabilitiesReply, QueryValueTableReply,
+    QueryVariantIdReply, QueryVariantNameReply, QueryVariantPartNumberReply, SetEscrowTimeoutReply,
+    StandardDenomination,
 };
 
 pub mod index {

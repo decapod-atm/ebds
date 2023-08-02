@@ -1,6 +1,6 @@
 use crate::std::fmt;
 
-use crate::{bool_enum, StandardDenomination, CLOSE_BRACE, OPEN_BRACE};
+use crate::{bool_enum, StandardDenomination};
 
 mod document_status;
 
@@ -90,7 +90,7 @@ impl fmt::Display for DeviceState {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(
             f,
-            "{OPEN_BRACE}idling:{}, accepting:{}, escrowed_state:{}, stacking:{}, stacked_event:{}, returning:{}, returned_event:{}{CLOSE_BRACE}",
+            "{{idling:{}, accepting:{}, escrowed_state:{}, stacking:{}, stacked_event:{}, returning:{}, returned_event:{}}}",
             self.idling(),
             self.accepting(),
             self.escrowed_state(),
@@ -308,7 +308,7 @@ impl fmt::Display for DeviceStatus {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(
             f,
-            "{OPEN_BRACE}\"cheated\":{},\"rejected\":{},\"jammed\":{},\"stacker_full\":{},\"cassette_attached\":{},\"paused\":{},\"calibration\":{}{CLOSE_BRACE}",
+            r#"{{"cheated":{},"rejected":{},"jammed":{},"stacker_full":{},"cassette_attached":{},"paused":{},"calibration":{}}}"#,
             self.cheated(),
             self.rejected(),
             self.jammed(),
@@ -526,7 +526,7 @@ impl fmt::Display for ExceptionStatus {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(
             f,
-            "{OPEN_BRACE}\"power_up\":{},\"invalid_command\":{},\"note_value\":\"{}\",\"transport_open\":{}{CLOSE_BRACE}",
+            r#"{{"power_up":{},"invalid_command":{},"note_value":"{}","transport_open":{}}}"#,
             self.power_up(),
             self.invalid_command(),
             StandardDenomination::from_note_value(self.note_value()),
@@ -626,7 +626,7 @@ impl fmt::Display for MiscDeviceState {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(
             f,
-            "{OPEN_BRACE}\"stalled\":{},\"flash_download\":{},\"pre_stack\":{},\"raw_barcode\":{},\"device_capabilities\":{},\"disabled\":{}{CLOSE_BRACE}",
+            r#"{{"stalled":{},"flash_download":{},"pre_stack":{},"raw_barcode":{},"device_capabilities":{},"disabled":{}}}"#,
             self.stalled(),
             self.flash_download(),
             self.pre_stack(),

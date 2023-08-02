@@ -7,11 +7,15 @@ mod reply_7bit;
 mod reply_8bit;
 mod start_download;
 
-pub use baud_rate::*;
-pub use message_7bit::*;
-pub use message_8bit::*;
-pub use reply_7bit::*;
-pub use reply_8bit::*;
+pub use baud_rate::{
+    index as baud_rate_index, BaudRate, BaudRateChangeReply, BaudRateChangeRequest,
+};
+pub use message_7bit::{index as message_7bit_index, FlashDownloadMessage7bit};
+pub use message_8bit::{
+    index as message_8bit_index, FlashDownloadMessage8bit_32, FlashDownloadMessage8bit_64,
+};
+pub use reply_7bit::{index as reply_7bit_index, FlashDownloadReply7bit};
+pub use reply_8bit::{index as reply_8bit_index, FlashDownloadReply8bit};
 pub use start_download::*;
 
 pub trait FlashDownloadMessage<const DATA_LEN: usize>: MessageOps {

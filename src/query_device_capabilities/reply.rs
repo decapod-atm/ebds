@@ -3,7 +3,7 @@ use std::fmt;
 
 use crate::{
     impl_default, impl_message_ops, impl_omnibus_nop_reply, len::QUERY_DEVICE_CAPABILITIES_REPLY,
-    MessageOps, MessageType, CLOSE_BRACE, OPEN_BRACE,
+    MessageOps, MessageType,
 };
 
 pub mod index {
@@ -38,17 +38,23 @@ bitfield! {
 
 impl fmt::Display for Cap0 {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "{{")?;
+        write!(f, r#""extended_pup_mode":{},"#, self.extended_pup_mode())?;
         write!(
             f,
-            "{OPEN_BRACE}\"extended_pup_mode\":{},\"extended_orientation\":{},\"application_and_variant_id\":{},\"bnf_status\":{},\"test_documents\":{},\"bezel\":{},\"easitrax\":{}{CLOSE_BRACE}",
-            self.extended_pup_mode(),
-            self.extended_orientation(),
-            self.application_and_variant_id(),
-            self.bnf_status(),
-            self.test_documents(),
-            self.bezel(),
-            self.easitrax(),
-        )
+            r#""extended_orientation":{},"#,
+            self.extended_orientation()
+        )?;
+        write!(
+            f,
+            r#""application_and_variant_id":{},"#,
+            self.application_and_variant_id()
+        )?;
+        write!(f, r#""bnf_status":{},"#, self.bnf_status())?;
+        write!(f, r#""test_documents":{},"#, self.test_documents())?;
+        write!(f, r#""bezel":{},"#, self.bezel())?;
+        write!(f, r#""easitrax":{}"#, self.easitrax())?;
+        write!(f, "}}")
     }
 }
 
@@ -91,16 +97,18 @@ bitfield! {
 
 impl fmt::Display for Cap1 {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "{{")?;
+        write!(f, r#""note_retrieved":{},"#, self.note_retrieved())?;
+        write!(f, r#""advanced_bookmark":{},"#, self.advanced_bookmark())?;
+        write!(f, r#""abds_download\":{},"#, self.abds_download())?;
+        write!(f, r#""clear_audit\":{},"#, self.clear_audit())?;
+        write!(f, r#"multi_note_escrow\":{},"#, self.multi_note_escrow())?;
         write!(
             f,
-            "{OPEN_BRACE}\"note_retrieved\":{},\"advanced_bookmark\":{},\"abds_download\":{},\"clear_audit\":{},\"multi_note_escrow\":{},\"unix_timestamp_32bit\":{}{CLOSE_BRACE}",
-            self.note_retrieved(),
-            self.advanced_bookmark(),
-            self.abds_download(),
-            self.clear_audit(),
-            self.multi_note_escrow(),
-            self.unix_timestamp_32bit(),
-        )
+            r#""unix_timestamp_32bit":{}"#,
+            self.unix_timestamp_32bit()
+        )?;
+        write!(f, "}}")
     }
 }
 
@@ -146,16 +154,38 @@ bitfield! {
 
 impl fmt::Display for Cap2 {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "{{")?;
         write!(
             f,
-            "{OPEN_BRACE}\"one_denom_recycling\":{},\"two_denom_recycling\":{},\"three_denom_recycling\":{},\"four_denom_recycling\":{},\"improperly_seated_head_detection\":{},\"mixed_denom_recycling\":{}{CLOSE_BRACE}",
-            self.one_denom_recycling(),
-            self.two_denom_recycling(),
-            self.three_denom_recycling(),
-            self.four_denom_recycling(),
-            self.improperly_seated_head_detection(),
-            self.mixed_denom_recycling(),
-        )
+            r#""one_denom_recycling":{},"#,
+            self.one_denom_recycling()
+        )?;
+        write!(
+            f,
+            r#""two_denom_recycling":{},"#,
+            self.two_denom_recycling()
+        )?;
+        write!(
+            f,
+            r#""three_denom_recycling\":{},"#,
+            self.three_denom_recycling()
+        )?;
+        write!(
+            f,
+            r#""four_denom_recycling\":{},"#,
+            self.four_denom_recycling()
+        )?;
+        write!(
+            f,
+            r#""improperly_seated_head_detection":{},"#,
+            self.improperly_seated_head_detection()
+        )?;
+        write!(
+            f,
+            r#""mixed_denom_recycling":{}"#,
+            self.mixed_denom_recycling()
+        )?;
+        write!(f, "}}")
     }
 }
 
@@ -192,7 +222,7 @@ impl fmt::Display for Cap3 {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(
             f,
-            "{OPEN_BRACE}\"customer_config\":{},\"banknote_classification\":{}{CLOSE_BRACE}",
+            r#"{{"customer_config":{},"banknote_classification":{}}}"#,
             self.customer_config(),
             self.banknote_classification(),
         )
@@ -228,11 +258,7 @@ bitfield! {
 
 impl fmt::Display for Cap4 {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(
-            f,
-            "{OPEN_BRACE}\"reserved\": 0b{:08b}{CLOSE_BRACE}",
-            self.reserved(),
-        )
+        write!(f, r#"{{"reserved": 0b{:08b}}}"#, self.reserved())
     }
 }
 
@@ -265,11 +291,7 @@ bitfield! {
 
 impl fmt::Display for Cap5 {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(
-            f,
-            "{OPEN_BRACE}\"reserved\": 0b{:08b}{CLOSE_BRACE}",
-            self.reserved()
-        )
+        write!(f, r#"{{"reserved": 0b{:08b}}}"#, self.reserved())
     }
 }
 
