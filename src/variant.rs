@@ -1,5 +1,4 @@
-use crate::std;
-use std::fmt;
+use crate::std::fmt;
 
 use super::*;
 

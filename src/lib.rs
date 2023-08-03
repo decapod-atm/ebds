@@ -51,9 +51,12 @@ extern crate bitfield;
 #[cfg(not(feature = "std"))]
 pub(crate) use core as std;
 #[cfg(feature = "std")]
+#[allow(clippy::single_component_path_imports)]
 pub(crate) use std;
 
 use std::{fmt, ops::Not};
+
+pub(crate) use currency_iso4217::Currency;
 
 /// Banknote types used across multiple messages
 pub mod banknote;
@@ -65,13 +68,9 @@ pub mod denomination;
 pub mod error;
 /// Hardware status and related types
 pub mod hardware;
-/// JSON-RPC message and related types
-pub mod jsonrpc;
 /// Logging convenience helpers
 pub mod logging;
 mod macros;
-/// JSON-RPC and device method types
-pub mod method;
 /// Device status types
 pub mod status;
 
@@ -80,9 +79,7 @@ pub use cash::*;
 pub use denomination::*;
 pub use error::*;
 pub use hardware::*;
-pub use jsonrpc::*;
 pub use logging::*;
-pub use method::*;
 pub use status::*;
 
 /// Advanced Bookmark Mode - Extended (Type 0x07, Subtype 0x0D)
@@ -203,6 +200,7 @@ pub const DEFAULT_CURRENCY: Currency = Currency::AMD;
 pub fn bau_currency() -> Currency {
     std::env::var(ENV_CURRENCY)
         .unwrap_or(format!("{DEFAULT_CURRENCY}"))
+        .as_str()
         .into()
 }
 

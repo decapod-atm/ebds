@@ -357,7 +357,7 @@ impl From<std::str::Utf8Error> for JsonRpcError {
 
 /// Basic error type for serial communication
 #[repr(C)]
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 pub struct Error {
     code: ErrorCode,
     message: String,
@@ -475,7 +475,7 @@ impl From<&JsonRpcError> for Error {
 
 /// Error codes for returned errors from acceptor device
 #[repr(C)]
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, PartialEq, Deserialize, Serialize)]
 // FIXME: fill out with more error codes
 pub enum ErrorCode {
     /// Generic failure code
@@ -528,6 +528,6 @@ impl From<&JsonRpcErrorCode> for ErrorCode {
 
 impl fmt::Display for ErrorCode {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{}", <&'static str>::from(self))
+        write!(f, "{}", <&str>::from(self))
     }
 }

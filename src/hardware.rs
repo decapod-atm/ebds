@@ -1,15 +1,11 @@
-#[cfg(not(feature = "std"))]
 use alloc::string::String;
 
 use serde::{ser::SerializeStruct, Deserialize, Serialize, Serializer};
 
-use crate::std;
-use std::fmt;
-
 use crate::{
-    cash::Currency,
-    jsonrpc::{CLOSE_BRACE, OPEN_BRACE},
     status::{DeviceState, DeviceStateFlags},
+    std::{self, fmt},
+    Currency,
 };
 
 pub const ENV_BAU_DEVICE: &str = "SERIAL_PATH_BAU";
@@ -174,7 +170,7 @@ impl From<&HardwareState> for &'static str {
 
 impl fmt::Display for HardwareState {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}", <&'static str>::from(self))
+        write!(f, "{}", <&str>::from(self))
     }
 }
 
@@ -331,20 +327,33 @@ impl BillAcceptorStatusDetails {
 
 impl fmt::Display for BillAcceptorStatusDetails {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{OPEN_BRACE}")?;
+        let mut has_field = false;
+        write!(f, "{{")?;
         if let Some(ret) = self.cashbox_removed {
-            write!(f, "\"cashbox_removed\":{}", ret)?;
+            write!(f, r#""cashbox_removed":{ret}"#)?;
+            has_field = true;
         }
         if let Some(ret) = self.firmware_version.as_ref() {
-            write!(f, ", \"firmware_version\":\"{}\"", ret)?;
+            if has_field {
+                write!(f, ",")?;
+            }
+            write!(f, r#""firmware_version":"{ret}""#)?;
+            has_field = true;
         }
         if let Some(ret) = self.currency {
-            write!(f, ", \"currency\":\"{}\"", ret)?;
+            if has_field {
+                write!(f, ",")?;
+            }
+            write!(f, r#""currency":{ret}"#)?;
+            has_field = true;
         }
         if let Some(ret) = self.jammed {
-            write!(f, ", \"jammed\":{}", ret)?;
+            if has_field {
+                write!(f, ",")?;
+            }
+            write!(f, r#""jammed":{ret}"#)?;
         }
-        write!(f, "{CLOSE_BRACE}")
+        write!(f, "}}")
     }
 }
 
@@ -502,7 +511,12 @@ impl fmt::Display for HardwareStatus {
         let description = self.description();
         let details = self.details();
 
-        write!(f, "{OPEN_BRACE}\"component\":\"{component}\",\"state\":{state},\"description\":\"{description}\",\"details\":{details}{CLOSE_BRACE}")
+        write!(f, "{{")?;
+        write!(f, r#""component":"{component}","#)?;
+        write!(f, r#""state":{state},"#)?;
+        write!(f, r#""description":"{description}","#)?;
+        write!(f, r#""details":{details}"#)?;
+        write!(f, "}}")
     }
 }
 
@@ -513,55 +527,55 @@ mod tests {
 
     #[test]
     fn test_hardware_component_serde() -> Result<()> {
-        assert_eq!(serde_json::to_string(&HardwareComponent::CDU)?, "\"CDU\"");
-        assert_eq!(serde_json::to_string(&HardwareComponent::EPP)?, "\"EPP\"");
-        assert_eq!(serde_json::to_string(&HardwareComponent::SIU)?, "\"SIU\"");
-        assert_eq!(serde_json::to_string(&HardwareComponent::RPU)?, "\"RPU\"");
-        assert_eq!(serde_json::to_string(&HardwareComponent::MCR)?, "\"MCR\"");
-        assert_eq!(serde_json::to_string(&HardwareComponent::BAU)?, "\"BAU\"");
-        assert_eq!(serde_json::to_string(&HardwareComponent::BA2)?, "\"BA2\"");
-        assert_eq!(serde_json::to_string(&HardwareComponent::BCS)?, "\"BCS\"");
-        assert_eq!(serde_json::to_string(&HardwareComponent::CAM)?, "\"CAM\"");
-        assert_eq!(serde_json::to_string(&HardwareComponent::UPS)?, "\"UPS\"");
+        assert_eq!(serde_json::to_string(&HardwareComponent::CDU)?, r#""CDU""#);
+        assert_eq!(serde_json::to_string(&HardwareComponent::EPP)?, r#""EPP""#);
+        assert_eq!(serde_json::to_string(&HardwareComponent::SIU)?, r#""SIU""#);
+        assert_eq!(serde_json::to_string(&HardwareComponent::RPU)?, r#""RPU""#);
+        assert_eq!(serde_json::to_string(&HardwareComponent::MCR)?, r#""MCR""#);
+        assert_eq!(serde_json::to_string(&HardwareComponent::BAU)?, r#""BAU""#);
+        assert_eq!(serde_json::to_string(&HardwareComponent::BA2)?, r#""BA2""#);
+        assert_eq!(serde_json::to_string(&HardwareComponent::BCS)?, r#""BCS""#);
+        assert_eq!(serde_json::to_string(&HardwareComponent::CAM)?, r#""CAM""#);
+        assert_eq!(serde_json::to_string(&HardwareComponent::UPS)?, r#""UPS""#);
 
         assert_eq!(
-            serde_json::from_str::<HardwareComponent>("\"CDU\"")?,
+            serde_json::from_str::<HardwareComponent>(r#""CDU""#)?,
             HardwareComponent::CDU
         );
         assert_eq!(
-            serde_json::from_str::<HardwareComponent>("\"EPP\"")?,
+            serde_json::from_str::<HardwareComponent>(r#""EPP""#)?,
             HardwareComponent::EPP
         );
         assert_eq!(
-            serde_json::from_str::<HardwareComponent>("\"SIU\"")?,
+            serde_json::from_str::<HardwareComponent>(r#""SIU""#)?,
             HardwareComponent::SIU
         );
         assert_eq!(
-            serde_json::from_str::<HardwareComponent>("\"RPU\"")?,
+            serde_json::from_str::<HardwareComponent>(r#""RPU""#)?,
             HardwareComponent::RPU
         );
         assert_eq!(
-            serde_json::from_str::<HardwareComponent>("\"MCR\"")?,
+            serde_json::from_str::<HardwareComponent>(r#""MCR""#)?,
             HardwareComponent::MCR
         );
         assert_eq!(
-            serde_json::from_str::<HardwareComponent>("\"BAU\"")?,
+            serde_json::from_str::<HardwareComponent>(r#""BAU""#)?,
             HardwareComponent::BAU
         );
         assert_eq!(
-            serde_json::from_str::<HardwareComponent>("\"BA2\"")?,
+            serde_json::from_str::<HardwareComponent>(r#""BA2""#)?,
             HardwareComponent::BA2
         );
         assert_eq!(
-            serde_json::from_str::<HardwareComponent>("\"BCS\"")?,
+            serde_json::from_str::<HardwareComponent>(r#""BCS""#)?,
             HardwareComponent::BCS
         );
         assert_eq!(
-            serde_json::from_str::<HardwareComponent>("\"CAM\"")?,
+            serde_json::from_str::<HardwareComponent>(r#""CAM""#)?,
             HardwareComponent::CAM
         );
         assert_eq!(
-            serde_json::from_str::<HardwareComponent>("\"UPS\"")?,
+            serde_json::from_str::<HardwareComponent>(r#""UPS""#)?,
             HardwareComponent::UPS
         );
 
@@ -570,16 +584,16 @@ mod tests {
 
     #[test]
     fn test_hardware_state_serde() -> Result<()> {
-        assert_eq!(serde_json::to_string(&HardwareState::OK)?, "\"OK\"");
+        assert_eq!(serde_json::to_string(&HardwareState::OK)?, r#""OK""#);
         assert_eq!(
             serde_json::to_string(&HardwareState::Missing)?,
-            "\"MISSING\""
+            r#""MISSING""#
         );
         assert_eq!(
             serde_json::to_string(&HardwareState::Warning)?,
-            "\"WARNING\""
+            r#""WARNING""#
         );
-        assert_eq!(serde_json::to_string(&HardwareState::Error)?, "\"ERROR\"");
+        assert_eq!(serde_json::to_string(&HardwareState::Error)?, r#""ERROR""#);
 
         Ok(())
     }
@@ -593,7 +607,7 @@ mod tests {
             jammed: Some(false),
         };
 
-        let expected = "{\"cashbox_removed\":true,\"firmware_version\":\"version-1.0\",\"currency\":\"USD\",\"jammed\":false}";
+        let expected = r#"{"cashbox_removed":true,"firmware_version":"version-1.0","currency":"USD","jammed":false}"#;
 
         assert_eq!(serde_json::to_string(&bau_status_filled)?, expected);
 
@@ -608,11 +622,11 @@ mod tests {
             jammed: None,
         };
 
-        let expected = "{\"cashbox_removed\":null,\"firmware_version\":\"version-1.0\",\"currency\":\"USD\",\"jammed\":null}";
+        let expected = r#"{"cashbox_removed":null,"firmware_version":"version-1.0","currency":"USD","jammed":null}"#;
 
         assert_eq!(serde_json::to_string(&bau_status_sparse)?, expected);
 
-        let sparse_json = "{\"firmware_version\":\"version-1.0\",\"currency\":\"USD\"}";
+        let sparse_json = r#"{"firmware_version":"version-1.0","currency":"USD"}"#;
         let des_sparse: BillAcceptorStatusDetails = serde_json::from_str(sparse_json)?;
         assert_eq!(des_sparse, bau_status_sparse);
 

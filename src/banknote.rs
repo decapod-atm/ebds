@@ -1,10 +1,9 @@
-#[cfg(not(feature = "std"))]
 use alloc::string::{String, ToString};
 
-use crate::std;
-use std::fmt;
-
-use crate::Currency;
+use crate::{
+    std::{self, fmt},
+    Currency,
+};
 
 pub type ISOCode = Currency;
 
@@ -443,7 +442,7 @@ impl Banknote {
     pub const fn default() -> Self {
         Self {
             value: 0f32,
-            iso_code: ISOCode::default(),
+            iso_code: ISOCode::new(),
             note_type: NoteType::default(),
             note_series: NoteSeries::default(),
             note_compatibility: NoteCompatibility::default(),
@@ -623,15 +622,15 @@ mod tests {
         let iso_usd = ISOCode::USD;
         let iso_xxx = ISOCode::XXX;
 
-        assert_eq!(<&'static str>::from(iso_aud), "AUD");
-        assert_eq!(<&'static str>::from(iso_amd), "AMD");
-        assert_eq!(<&'static str>::from(iso_cad), "CAD");
-        assert_eq!(<&'static str>::from(iso_eur), "EUR");
-        assert_eq!(<&'static str>::from(iso_gbp), "GBP");
-        assert_eq!(<&'static str>::from(iso_mxn), "MXN");
-        assert_eq!(<&'static str>::from(iso_cny), "CNY");
-        assert_eq!(<&'static str>::from(iso_usd), "USD");
-        assert_eq!(<&'static str>::from(iso_xxx), "XXX");
+        assert_eq!(<&str>::from(iso_aud), "AUD");
+        assert_eq!(<&str>::from(iso_amd), "AMD");
+        assert_eq!(<&str>::from(iso_cad), "CAD");
+        assert_eq!(<&str>::from(iso_eur), "EUR");
+        assert_eq!(<&str>::from(iso_gbp), "GBP");
+        assert_eq!(<&str>::from(iso_mxn), "MXN");
+        assert_eq!(<&str>::from(iso_cny), "CNY");
+        assert_eq!(<&str>::from(iso_usd), "USD");
+        assert_eq!(<&str>::from(iso_xxx), "XXX");
 
         assert_eq!(ISOCode::from("AUD"), iso_aud);
         assert_eq!(ISOCode::from("AMD"), iso_amd);
@@ -654,27 +653,6 @@ mod tests {
         assert_eq!(ISOCode::from(b"USD"), iso_usd);
         assert_eq!(ISOCode::from(b"XXX"), iso_xxx);
         assert_eq!(ISOCode::from(b""), iso_xxx);
-
-        for i in 0..=u8::MAX {
-            // Check that values that are too short are parsed as the default value
-            assert_eq!(ISOCode::from([i]), ISOCode::default());
-
-            for j in 0..=u8::MAX {
-                // Check that values that are too short are parsed as the default value
-                assert_eq!(ISOCode::from([i, j]), ISOCode::default());
-
-                for k in 0..=u8::MAX {
-                    let iso_str = &[i, j, k];
-                    // Check that all values outside the valid range are parsed as the default
-                    // value
-                    match iso_str.as_ref() {
-                        b"AUD" | b"AMD" | b"CAD" | b"EUR" | b"GBP" | b"JPY" | b"MXN" | b"CNY"
-                        | b"USD" => continue,
-                        _ => assert_eq!(ISOCode::from(iso_str), ISOCode::default()),
-                    }
-                }
-            }
-        }
     }
 
     #[test]
