@@ -58,7 +58,7 @@ impl DeviceState {
 
     /// If all seven state bits are zero, the device is out of service.
     pub fn host_disabled(&self) -> bool {
-        self.0 == DeviceStateFlags::HostDisabled as u8
+        self.0 == u8::from(DeviceStateFlags::HostDisabled)
     }
 }
 
@@ -109,35 +109,35 @@ impl fmt::Display for DeviceState {
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub enum DeviceStateFlags {
     Disconnected = 0,
-    PowerUp,
-    Initialize,
-    Download,
-    Idle,
-    HostDisabled,
-    BusyCalculation,
-    Escrowed,
-    Accepting,
-    Stacking,
-    Returning,
-    Cheated,
-    Jammed,
-    StackerFull,
-    Paused,
-    Calibration,
-    Failure,
-    Stalled,
-    CashBoxRemoved,
-    TransportOpened,
-    Dispensing,
-    FloatingDown,
-    Disabled,
-    EscrowStorageFull,
-    IdleInEscrowSession,
-    HostDisabledInEscrowSession,
-    UnknownDocumentsDetected,
-    PatternRecovering,
-    DisabledAndJammed,
-    Unknown = 0xff,
+    PowerUp = 1,
+    Initialize = 2,
+    Download = 3,
+    Idle = 4,
+    HostDisabled = 5,
+    BusyCalculation = 6,
+    Escrowed = 7,
+    Accepting = 8,
+    Stacking = 9,
+    Returning = 10,
+    Cheated = 11,
+    Jammed = 12,
+    StackerFull = 13,
+    Paused = 14,
+    Calibration = 15,
+    Failure = 16,
+    Stalled = 17,
+    CashBoxRemoved = 18,
+    TransportOpened = 19,
+    Dispensing = 20,
+    FloatingDown = 21,
+    Disabled = 22,
+    EscrowStorageFull = 23,
+    IdleInEscrowSession = 24,
+    HostDisabledInEscrowSession = 25,
+    UnknownDocumentsDetected = 26,
+    PatternRecovering = 27,
+    DisabledAndJammed = 28,
+    Unknown(u8),
 }
 
 impl From<u8> for DeviceStateFlags {
@@ -172,8 +172,51 @@ impl From<u8> for DeviceStateFlags {
             26 => Self::UnknownDocumentsDetected,
             27 => Self::PatternRecovering,
             28 => Self::DisabledAndJammed,
-            _ => Self::Unknown,
+            _ => Self::Unknown(f),
         }
+    }
+}
+
+impl From<&DeviceStateFlags> for u8 {
+    fn from(val: &DeviceStateFlags) -> Self {
+        match val {
+            DeviceStateFlags::Disconnected => 0,
+            DeviceStateFlags::PowerUp => 1,
+            DeviceStateFlags::Initialize => 2,
+            DeviceStateFlags::Download => 3,
+            DeviceStateFlags::Idle => 4,
+            DeviceStateFlags::HostDisabled => 5,
+            DeviceStateFlags::BusyCalculation => 6,
+            DeviceStateFlags::Escrowed => 7,
+            DeviceStateFlags::Accepting => 8,
+            DeviceStateFlags::Stacking => 9,
+            DeviceStateFlags::Returning => 10,
+            DeviceStateFlags::Cheated => 11,
+            DeviceStateFlags::Jammed => 12,
+            DeviceStateFlags::StackerFull => 13,
+            DeviceStateFlags::Paused => 14,
+            DeviceStateFlags::Calibration => 15,
+            DeviceStateFlags::Failure => 16,
+            DeviceStateFlags::Stalled => 17,
+            DeviceStateFlags::CashBoxRemoved => 18,
+            DeviceStateFlags::TransportOpened => 19,
+            DeviceStateFlags::Dispensing => 20,
+            DeviceStateFlags::FloatingDown => 21,
+            DeviceStateFlags::Disabled => 22,
+            DeviceStateFlags::EscrowStorageFull => 23,
+            DeviceStateFlags::IdleInEscrowSession => 24,
+            DeviceStateFlags::HostDisabledInEscrowSession => 25,
+            DeviceStateFlags::UnknownDocumentsDetected => 26,
+            DeviceStateFlags::PatternRecovering => 27,
+            DeviceStateFlags::DisabledAndJammed => 28,
+            DeviceStateFlags::Unknown(f) => *f,
+        }
+    }
+}
+
+impl From<DeviceStateFlags> for u8 {
+    fn from(val: DeviceStateFlags) -> Self {
+        (&val).into()
     }
 }
 
@@ -227,7 +270,7 @@ impl From<&DeviceStateFlags> for &'static str {
             DeviceStateFlags::UnknownDocumentsDetected => "Unknown documents detected",
             DeviceStateFlags::PatternRecovering => "Pattern recovering",
             DeviceStateFlags::DisabledAndJammed => "Disabled and jammed",
-            DeviceStateFlags::Unknown => "Unknown",
+            DeviceStateFlags::Unknown(_) => "Unknown",
         }
     }
 }
@@ -240,7 +283,10 @@ impl From<DeviceStateFlags> for &'static str {
 
 impl fmt::Display for DeviceStateFlags {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{}", <&'static str>::from(self))
+        match self {
+            DeviceStateFlags::Unknown(s) => write!(f, "Unknown: {s}, bitfields: {s:08b}"),
+            flag => write!(f, "{}", <&str>::from(flag)),
+        }
     }
 }
 
@@ -412,7 +458,7 @@ impl From<&CashBoxStatus> for &'static str {
 
 impl fmt::Display for CashBoxStatus {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{}", <&'static str>::from(self))
+        write!(f, "{}", <&str>::from(self))
     }
 }
 
