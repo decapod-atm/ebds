@@ -1072,3 +1072,16 @@ impl fmt::Display for SCCodeRevision {
         write!(f, "{}", (self.0 .0 & 0b111_1111) as f32 / 10f32)
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_device_state_flags_display() {
+        let unknown_flag = DeviceStateFlags::from(42);
+        let exp_flag_str = "Unknown: 42, bitfields: 00101010"; 
+
+        assert_eq!(format!("{unknown_flag}").as_str(), exp_flag_str);
+    }
+}

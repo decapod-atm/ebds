@@ -3,7 +3,7 @@ use crate::std::fmt;
 use super::*;
 
 /// Message reply variants for message building.
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub enum MessageVariant {
     // Omnibus reply
     OmnibusReply(OmnibusReply),
