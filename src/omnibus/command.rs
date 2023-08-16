@@ -326,6 +326,7 @@ mod bitmask {
 /// For more detailed information about the meaning of the data fields, see the EBDS Protocol
 /// Specification: sections 7.1.1.[1-3].
 #[repr(C)]
+#[derive(Clone, Copy, Debug, PartialEq)]
 pub struct OmnibusCommand {
     buf: [u8; OMNIBUS_COMMAND],
 }
