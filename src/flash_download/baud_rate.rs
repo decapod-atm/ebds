@@ -2,7 +2,7 @@ use crate::std;
 use std::fmt;
 
 use crate::{
-    impl_default, impl_message_ops, impl_omnibus_nop_reply,
+    impl_message_ops, impl_omnibus_nop_reply,
     len::{BAUD_CHANGE_REPLY, BAUD_CHANGE_REQUEST},
     MessageOps, MessageType,
 };
@@ -15,8 +15,9 @@ pub mod index {
 
 /// Represents the acceptable values for host-device serial baud rates.
 #[repr(u8)]
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub enum BaudRate {
+    #[default]
     _9600 = 0x01,
     _19200 = 0x02,
     _38400 = 0x03,
@@ -126,7 +127,7 @@ impl fmt::Display for BaudRate {
 /// respond to the baud rate change request. This means the host will be required to perform the download
 /// using the original algorithm.
 #[repr(C)]
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct BaudRateChangeRequest {
     buf: [u8; BAUD_CHANGE_REQUEST],
 }
@@ -162,7 +163,6 @@ impl BaudRateChangeRequest {
     }
 }
 
-impl_default!(BaudRateChangeRequest);
 impl_message_ops!(BaudRateChangeRequest);
 
 impl fmt::Display for BaudRateChangeRequest {
@@ -202,7 +202,7 @@ impl fmt::Display for BaudRateChangeRequest {
 /// respond to the baud rate change request. This means the host will be required to perform the download
 /// using the original algorithm.
 #[repr(C)]
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct BaudRateChangeReply {
     buf: [u8; BAUD_CHANGE_REPLY],
 }
@@ -238,7 +238,6 @@ impl BaudRateChangeReply {
     }
 }
 
-impl_default!(BaudRateChangeReply);
 impl_message_ops!(BaudRateChangeReply);
 impl_omnibus_nop_reply!(BaudRateChangeReply);
 

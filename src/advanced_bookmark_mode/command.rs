@@ -1,5 +1,5 @@
 use crate::{
-    bool_enum, impl_default, impl_extended_ops, impl_message_ops, impl_omnibus_extended_command,
+    bool_enum, impl_extended_ops, impl_message_ops, impl_omnibus_extended_command,
     len::ADVANCED_BOOKMARK_MODE_COMMAND, ExtendedCommand, ExtendedCommandOps, MessageOps,
     MessageType,
 };
@@ -56,7 +56,7 @@ bool_enum!(
 ///
 /// The Status byte tells the device to enable (0x01) or disable (0x00) the mode.
 #[repr(C)]
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct AdvancedBookmarkModeCommand {
     buf: [u8; ADVANCED_BOOKMARK_MODE_COMMAND],
 }
@@ -86,7 +86,6 @@ impl AdvancedBookmarkModeCommand {
     }
 }
 
-impl_default!(AdvancedBookmarkModeCommand);
 impl_message_ops!(AdvancedBookmarkModeCommand);
 impl_extended_ops!(AdvancedBookmarkModeCommand);
 impl_omnibus_extended_command!(AdvancedBookmarkModeCommand);

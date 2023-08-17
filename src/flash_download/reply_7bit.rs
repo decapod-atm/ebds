@@ -2,8 +2,8 @@ use crate::std;
 use std::fmt;
 
 use crate::{
-    impl_default, impl_message_ops, impl_omnibus_nop_reply, len::FLASH_DOWNLOAD_REPLY_7BIT,
-    seven_bit_u16, u16_seven_bit, MessageOps, MessageType,
+    impl_message_ops, impl_omnibus_nop_reply, len::FLASH_DOWNLOAD_REPLY_7BIT, seven_bit_u16,
+    u16_seven_bit, MessageOps, MessageType,
 };
 
 use super::FlashDownloadReply;
@@ -45,7 +45,7 @@ pub mod index {
 /// | Byte  | 0    | 1    | 2    | 3         | 4         | 5         | 6         | 7    | 8   |
 /// | Value | 0x02 | 0x09 | 0x5n | 0x0n      | 0x0n      | 0x0n      | 0x0n      | 0x03 | zz  |
 #[repr(C)]
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct FlashDownloadReply7bit {
     buf: [u8; FLASH_DOWNLOAD_REPLY_7BIT],
 }
@@ -64,7 +64,6 @@ impl FlashDownloadReply7bit {
     }
 }
 
-impl_default!(FlashDownloadReply7bit);
 impl_message_ops!(FlashDownloadReply7bit);
 impl_omnibus_nop_reply!(FlashDownloadReply7bit);
 

@@ -2,8 +2,8 @@ use crate::std;
 use std::fmt;
 
 use crate::{
-    bool_enum, impl_default, impl_message_ops, impl_omnibus_nop_reply, len::START_DOWNLOAD_REPLY,
-    MessageOps, MessageType,
+    bool_enum, impl_message_ops, impl_omnibus_nop_reply, len::START_DOWNLOAD_REPLY, MessageOps,
+    MessageType,
 };
 
 pub mod index {
@@ -25,7 +25,7 @@ bool_enum!(
 /// |------|------|------|-------|-------|-------|---------|-------|-------|------|------|
 /// | 0x02 | 0x0B | 0x5n | nn    | nn    | nn    | 0x00/02 | nn    | nn    | 0x03 | zz   |
 #[repr(C)]
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct StartDownloadReply {
     buf: [u8; START_DOWNLOAD_REPLY],
 }
@@ -59,7 +59,6 @@ impl StartDownloadReply {
     }
 }
 
-impl_default!(StartDownloadReply);
 impl_message_ops!(StartDownloadReply);
 impl_omnibus_nop_reply!(StartDownloadReply);
 

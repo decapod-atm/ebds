@@ -1,5 +1,5 @@
 use crate::{
-    impl_default, impl_extended_ops, impl_message_ops, impl_omnibus_extended_command,
+    impl_extended_ops, impl_message_ops, impl_omnibus_extended_command,
     len::QUERY_EXTENDED_NOTE_SPECIFICATION, ExtendedCommand, ExtendedCommandOps,
     ExtendedNoteReporting, MessageOps, MessageType, OmnibusCommandOps,
 };
@@ -23,7 +23,8 @@ pub mod index {
 ///
 /// The first extended data byte is the Index. This index value starts at `1` and represents the index of the
 /// extended note table data in the device.
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[repr(C)]
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct QueryExtendedNoteSpecification {
     buf: [u8; QUERY_EXTENDED_NOTE_SPECIFICATION],
 }
@@ -54,7 +55,6 @@ impl QueryExtendedNoteSpecification {
     }
 }
 
-impl_default!(QueryExtendedNoteSpecification);
 impl_message_ops!(QueryExtendedNoteSpecification);
 impl_extended_ops!(QueryExtendedNoteSpecification);
 impl_omnibus_extended_command!(QueryExtendedNoteSpecification);

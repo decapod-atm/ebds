@@ -1,7 +1,7 @@
 use bitfield::bitfield;
 
 use crate::{
-    bool_enum, impl_default, impl_message_ops, impl_omnibus_command_ops,
+    bool_enum, impl_message_ops, impl_omnibus_command_ops,
     len::{FLASH_DATA_PACKET, OMNIBUS_COMMAND},
     FlashDownloadMessage, MessageOps, MessageType, StandardDenomination,
 };
@@ -20,7 +20,7 @@ bitfield! {
     /// * [EscrowMode]: bit 4
     /// * [DocumentStack]: bit 5
     /// * [DocumentReturn]: bit 6
-    #[derive(Clone, Copy, Debug, PartialEq)]
+    #[derive(Clone, Copy, Debug, Default, PartialEq)]
     pub struct OperationalMode(u8);
     u8;
     /// This field controls the acceptance of bank notes based on the orientation of those
@@ -65,13 +65,14 @@ impl From<u8> for OperationalMode {
 
 /// Controls which bill orientation is accepted
 #[repr(u8)]
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub enum OrientationControl {
     /// Accept notes fed right edge first, face up only
     OneWay = 0b00,
     /// Accept notes face up only
     TwoWay = 0b01,
     /// Accept notes fed any way
+    #[default]
     FourWay = 0b10,
 }
 
@@ -153,7 +154,7 @@ bitfield! {
     /// * [PowerUp]: bits 2..3
     /// * [ExtendedNoteReporting]: bit 4
     /// * [ExtendedCouponReporting]: bit 5
-    #[derive(Clone, Copy, Debug, PartialEq)]
+    #[derive(Clone, Copy, Debug, Default, PartialEq)]
     pub struct Configuration(u8);
     u8;
     pub no_push, set_no_push: 0;
@@ -217,9 +218,10 @@ bool_enum!(
 /// Values that represent acceptor device power up  policy.
 /// That define device behavior on power up with bill in trace.
 #[repr(u8)]
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub enum PowerUp {
     /// Post - Escrow : The procedure will complete and the document will be stacked. However, no value will be reported to the host.
+    #[default]
     A = 0b00,
     /// Escrow : The device will go out of order and hold the document at the escrow position.
     /// Post - Escrow : The procedure will complete and the document will be stacked.
@@ -326,7 +328,7 @@ mod bitmask {
 /// For more detailed information about the meaning of the data fields, see the EBDS Protocol
 /// Specification: sections 7.1.1.[1-3].
 #[repr(C)]
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct OmnibusCommand {
     buf: [u8; OMNIBUS_COMMAND],
 }
@@ -486,7 +488,6 @@ pub trait OmnibusCommandOps: MessageOps {
     }
 }
 
-impl_default!(OmnibusCommand);
 impl_message_ops!(OmnibusCommand);
 impl_omnibus_command_ops!(OmnibusCommand);
 

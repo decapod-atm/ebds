@@ -2,8 +2,8 @@ use crate::std;
 use std::fmt;
 
 use crate::{
-    impl_default, impl_message_ops, impl_omnibus_nop_reply, len::QUERY_BOOT_PART_NUMBER_REPLY,
-    BootPartNumber, MessageOps, MessageType, PartVersion, ProjectNumber,
+    impl_message_ops, impl_omnibus_nop_reply, len::QUERY_BOOT_PART_NUMBER_REPLY, BootPartNumber,
+    MessageOps, MessageType, PartVersion, ProjectNumber,
 };
 
 pub mod index {
@@ -29,7 +29,7 @@ pub mod index {
 ///
 /// See [ProjectNumber](crate::ProjectNumber) for formatting details.
 #[repr(C)]
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct QueryBootPartNumberReply {
     buf: [u8; QUERY_BOOT_PART_NUMBER_REPLY],
 }
@@ -67,7 +67,6 @@ impl QueryBootPartNumberReply {
     }
 }
 
-impl_default!(QueryBootPartNumberReply);
 impl_message_ops!(QueryBootPartNumberReply);
 impl_omnibus_nop_reply!(QueryBootPartNumberReply);
 

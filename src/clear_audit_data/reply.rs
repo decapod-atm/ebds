@@ -2,7 +2,7 @@ use crate::std;
 use std::fmt;
 
 use crate::{
-    bool_enum, impl_default, impl_extended_ops, impl_message_ops, impl_omnibus_extended_reply,
+    bool_enum, impl_extended_ops, impl_message_ops, impl_omnibus_extended_reply,
     len::{CLEAR_AUDIT_DATA_REQUEST_ACK, CLEAR_AUDIT_DATA_REQUEST_RESULTS},
     ExtendedCommand, ExtendedCommandOps, MessageOps, MessageType, OmnibusReplyOps,
 };
@@ -47,7 +47,8 @@ pub mod index {
 /// device will NAK all Clear Audit Data Request
 /// * Device is in calibration mode.
 /// * The device is currently servicing another type 7 message request.
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[repr(C)]
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct ClearAuditDataRequestAck {
     buf: [u8; CLEAR_AUDIT_DATA_REQUEST_ACK],
 }
@@ -79,7 +80,6 @@ impl ClearAuditDataRequestAck {
     }
 }
 
-impl_default!(ClearAuditDataRequestAck);
 impl_message_ops!(ClearAuditDataRequestAck);
 impl_omnibus_extended_reply!(ClearAuditDataRequestAck);
 impl_extended_ops!(ClearAuditDataRequestAck);
@@ -119,7 +119,8 @@ impl fmt::Display for ClearAuditDataRequestAck {
 /// |:------|:----:|:----:|:----:|:-------:|:------:|:------:|:------:|:------:|:------:|:------:|:---------:|:----:|:---:|
 /// | Byte  | 0    | 1    | 2    | 3       | 4      | 5      | 6      | 7      | 8      | 9      | 10        | 11   | 12  |
 /// | Value | 0x02 | 0x0D | 0x7n | 0x1D    | nn     | nn     | nn     | nn     | nn     | nn     | 0x00/01   | 0x03 | zz  |
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[repr(C)]
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct ClearAuditDataRequestResults {
     buf: [u8; CLEAR_AUDIT_DATA_REQUEST_RESULTS],
 }
@@ -143,7 +144,6 @@ impl ClearAuditDataRequestResults {
     }
 }
 
-impl_default!(ClearAuditDataRequestResults);
 impl_message_ops!(ClearAuditDataRequestResults);
 impl_omnibus_extended_reply!(ClearAuditDataRequestResults);
 impl_extended_ops!(ClearAuditDataRequestResults);

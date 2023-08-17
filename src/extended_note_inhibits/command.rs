@@ -23,7 +23,7 @@ pub mod index {
 
 bitfield! {
     /// Represents enabled notes in the extended note table.
-    #[derive(Clone, Copy, Debug, PartialEq)]
+    #[derive(Clone, Copy, Debug, Default, PartialEq)]
     pub struct EnableNote(u8);
     u8;
     pub note1, set_note1: 0;
@@ -179,6 +179,7 @@ impl From<EnableNote> for u8 {
 /// | Enable 19 | -        | -        | -        | -        | -        | Note 128 | Note 127 |
 ///
 /// If the bit equals 1 then the note is enabled.
+#[derive(Clone, Copy, Debug, PartialEq)]
 pub struct SetExtendedNoteInhibits<const M: usize, const N: usize> {
     buf: [u8; M],
 }

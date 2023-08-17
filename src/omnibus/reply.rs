@@ -2,14 +2,13 @@ use crate::std;
 use std::fmt;
 
 use crate::{
-    banknote::*, cash::CurrencyDenomination, impl_default, impl_from_for_omnibus_reply,
-    impl_message_ops, impl_omnibus_reply_ops, len::OMNIBUS_REPLY, status::*,
-    AdvancedBookmarkModeReply, ClearAuditDataRequestAck, ClearAuditDataRequestResults,
-    ExtendedNoteInhibitsReplyAlt, ExtendedNoteReply, MessageOps, MessageType, NoteRetrievedEvent,
-    NoteRetrievedReply, QueryApplicationIdReply, QueryApplicationPartNumberReply,
-    QueryBootPartNumberReply, QueryDeviceCapabilitiesReply, QueryValueTableReply,
-    QueryVariantIdReply, QueryVariantNameReply, QueryVariantPartNumberReply, SetEscrowTimeoutReply,
-    StandardDenomination,
+    banknote::*, cash::CurrencyDenomination, impl_from_for_omnibus_reply, impl_message_ops,
+    impl_omnibus_reply_ops, len::OMNIBUS_REPLY, status::*, AdvancedBookmarkModeReply,
+    ClearAuditDataRequestAck, ClearAuditDataRequestResults, ExtendedNoteInhibitsReplyAlt,
+    ExtendedNoteReply, MessageOps, MessageType, NoteRetrievedEvent, NoteRetrievedReply,
+    QueryApplicationIdReply, QueryApplicationPartNumberReply, QueryBootPartNumberReply,
+    QueryDeviceCapabilitiesReply, QueryValueTableReply, QueryVariantIdReply, QueryVariantNameReply,
+    QueryVariantPartNumberReply, SetEscrowTimeoutReply, StandardDenomination,
 };
 
 pub mod index {
@@ -53,7 +52,7 @@ pub mod index {
 /// * Data byte 3: [MiscDeviceState]
 /// * Data byte 4: [ModelNumber]
 /// * Data byte 5: [CodeRevision]
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
 #[cfg_attr(feature = "arbitrary", derive(arbitrary::Arbitrary))]
 pub struct OmnibusReply {
     buf: [u8; OMNIBUS_REPLY],
@@ -480,7 +479,6 @@ pub trait OmnibusReplyOps: MessageOps {
     }
 }
 
-impl_default!(OmnibusReply);
 impl_message_ops!(OmnibusReply);
 impl_omnibus_reply_ops!(OmnibusReply);
 

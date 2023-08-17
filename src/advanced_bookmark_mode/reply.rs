@@ -2,7 +2,7 @@ use crate::std;
 use std::fmt;
 
 use crate::{
-    bool_enum, impl_default, impl_extended_ops, impl_message_ops, impl_omnibus_extended_reply,
+    bool_enum, impl_extended_ops, impl_message_ops, impl_omnibus_extended_reply,
     len::ADVANCED_BOOKMARK_MODE_REPLY, ExtendedCommand, ExtendedCommandOps, MessageOps,
     MessageType, OmnibusReplyOps,
 };
@@ -37,7 +37,7 @@ May also indicate the device was busy (NAKs when stacking or powering up).
 /// When the device stacks a document in this mode, the Standard Omnibus Reply (section 7.1.2) is
 /// reported with the stacked bit set and no value reported in data byte 2.
 #[repr(C)]
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct AdvancedBookmarkModeReply {
     buf: [u8; ADVANCED_BOOKMARK_MODE_REPLY],
 }
@@ -67,7 +67,6 @@ impl AdvancedBookmarkModeReply {
     }
 }
 
-impl_default!(AdvancedBookmarkModeReply);
 impl_message_ops!(AdvancedBookmarkModeReply);
 impl_omnibus_extended_reply!(AdvancedBookmarkModeReply);
 impl_extended_ops!(AdvancedBookmarkModeReply);

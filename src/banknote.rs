@@ -9,7 +9,7 @@ pub type ISOCode = Currency;
 
 /// A three character ASCII coded decimal value
 #[repr(C)]
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct BaseValue(u16);
 
 impl BaseValue {
@@ -75,8 +75,9 @@ impl<const N: usize> From<&[u8; N]> for BaseValue {
 /// An ASCII  coded sign value for the Exponent.
 /// This field is either a “+” or a “-“
 #[repr(u8)]
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub enum Sign {
+    #[default]
     Positive,
     Negative,
 }
@@ -117,8 +118,14 @@ pub struct Exponent(u8);
 impl Exponent {
     pub const LEN: usize = 2;
 
-    pub const fn default() -> Self {
+    pub const fn new() -> Self {
         Self(1)
+    }
+}
+
+impl Default for Exponent {
+    fn default() -> Self {
+        Self::new()
     }
 }
 
@@ -190,8 +197,9 @@ impl<const N: usize> From<&[u8; N]> for Exponent {
 /// Extended orientation bit is set in device
 /// capabilities map.
 #[repr(u8)]
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub enum BanknoteOrientation {
+    #[default]
     RightEdgeFaceUp = 0x00,
     RightEdgeFaceDown = 0x01,
     LeftEdgeFaceUp = 0x02,
@@ -251,13 +259,13 @@ impl fmt::Display for BanknoteOrientation {
 macro_rules! ascii_tuple_struct {
     ($name:ident, $base:tt, $doc:tt) => {
         #[doc = $doc]
-        #[derive(Clone, Copy, Debug, PartialEq)]
+        #[derive(Clone, Copy, Debug, Default, PartialEq)]
         pub struct $name($base);
 
         impl $name {
             pub const LEN: usize = std::mem::size_of::<$base>();
 
-            pub const fn default() -> Self {
+            pub const fn new() -> Self {
                 Self(0)
             }
 
@@ -332,8 +340,9 @@ ascii_tuple_struct!(
 "
 );
 
+/// Represents how the BAU device classifies a [Banknote].
 #[repr(u8)]
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub enum BanknoteClassification {
     /// Sent for any the following:
     ///
@@ -341,6 +350,7 @@ pub enum BanknoteClassification {
     /// - In response to a note escrowed or stacked event while device is in extended note mode and classification is
     ///     - Supported by the device but disabled.
     ///     - NOT supported by the device.
+    #[default]
     DisabledOrNotSupported = 0x00,
     /// Class 1 (unidentified banknote)
     Unidentified = 0x01,
@@ -353,7 +363,7 @@ pub enum BanknoteClassification {
 }
 
 impl BanknoteClassification {
-    pub const fn default() -> Self {
+    pub const fn new() -> Self {
         Self::DisabledOrNotSupported
     }
 }
@@ -400,7 +410,7 @@ impl fmt::Display for BanknoteClassification {
 
 /// The banknote value
 #[repr(C)]
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct Banknote {
     /// The banknote value.
     pub(crate) value: f32,
@@ -419,6 +429,7 @@ pub struct Banknote {
 }
 
 impl Banknote {
+    /// Creates a new [Banknote] with the provided parameters.
     pub const fn new(
         value: f32,
         iso_code: ISOCode,
@@ -439,15 +450,16 @@ impl Banknote {
         }
     }
 
-    pub const fn default() -> Self {
+    /// Creates a new null [Banknote].
+    pub const fn null() -> Self {
         Self {
-            value: 0f32,
+            value: 0.0,
             iso_code: ISOCode::new(),
-            note_type: NoteType::default(),
-            note_series: NoteSeries::default(),
-            note_compatibility: NoteCompatibility::default(),
-            note_version: NoteVersion::default(),
-            banknote_classification: BanknoteClassification::default(),
+            note_type: NoteType::new(),
+            note_series: NoteSeries::new(),
+            note_compatibility: NoteCompatibility::new(),
+            note_version: NoteVersion::new(),
+            banknote_classification: BanknoteClassification::new(),
         }
     }
 
@@ -546,7 +558,7 @@ impl fmt::Display for Banknote {
 
 /// Extended note table item
 #[repr(C)]
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct NoteTableItem {
     pub(crate) note_index: usize,
     pub(crate) banknote: Banknote,
@@ -558,14 +570,6 @@ impl NoteTableItem {
         Self {
             note_index,
             banknote,
-        }
-    }
-
-    /// Creates a default (null) [NoteTableItem]
-    pub const fn default() -> Self {
-        Self {
-            note_index: 0,
-            banknote: Banknote::default(),
         }
     }
 

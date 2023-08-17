@@ -2,7 +2,7 @@ use crate::std;
 use std::fmt;
 
 use crate::{
-    impl_default, impl_extended_ops, impl_message_ops, impl_omnibus_extended_reply,
+    impl_extended_ops, impl_message_ops, impl_omnibus_extended_reply,
     len::SET_ESCROW_TIMEOUT_REPLY, ExtendedCommand, ExtendedCommandOps, MessageOps, MessageType,
     OmnibusReplyOps,
 };
@@ -22,7 +22,8 @@ use crate::{
 /// |:------|:----:|:----:|:----:|:-------:|:------:|:------:|:------:|:------:|:------:|:------:|:----:|:---:|
 /// | Byte  | 0    | 1    | 2    | 3       | 4      | 5      | 6      | 7      | 8      | 9      | 10   | 11  |
 /// | Value | 0x02 | 0x0C | 0X7n | 0x04    | nn     | nn     | nn     | nn     | nn     | nn     | 0x03 | zz  |
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[repr(C)]
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct SetEscrowTimeoutReply {
     buf: [u8; SET_ESCROW_TIMEOUT_REPLY],
 }
@@ -42,7 +43,6 @@ impl SetEscrowTimeoutReply {
     }
 }
 
-impl_default!(SetEscrowTimeoutReply);
 impl_message_ops!(SetEscrowTimeoutReply);
 impl_extended_ops!(SetEscrowTimeoutReply);
 impl_omnibus_extended_reply!(SetEscrowTimeoutReply);

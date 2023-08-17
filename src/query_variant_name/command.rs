@@ -2,8 +2,8 @@ use crate::std;
 use std::fmt;
 
 use crate::{
-    impl_aux_ops, impl_default, impl_message_ops, impl_omnibus_command_ops,
-    len::QUERY_VARIANT_NAME_COMMAND, AuxCommand, AuxCommandOps, MessageOps, MessageType,
+    impl_aux_ops, impl_message_ops, impl_omnibus_command_ops, len::QUERY_VARIANT_NAME_COMMAND,
+    AuxCommand, AuxCommandOps, MessageOps, MessageType,
 };
 
 /// Query Variant Name - Command (Subtype 0x08)
@@ -18,6 +18,8 @@ use crate::{
 /// |:------|:----:|:----:|:----:|:------:|:------:|:-------:|:----:|:---:|
 /// | Byte  | 0    | 1    | 2    | 3      | 4      | 5       | 6    | 7   |
 /// | Value | 0x02 | 0x08 | 0x6n | 0x00   | 0x00   | 0x08    | 0x03 | zz  |
+#[repr(C)]
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct QueryVariantNameCommand {
     buf: [u8; QUERY_VARIANT_NAME_COMMAND],
 }
@@ -37,7 +39,6 @@ impl QueryVariantNameCommand {
     }
 }
 
-impl_default!(QueryVariantNameCommand);
 impl_message_ops!(QueryVariantNameCommand);
 impl_omnibus_command_ops!(QueryVariantNameCommand);
 impl_aux_ops!(QueryVariantNameCommand);

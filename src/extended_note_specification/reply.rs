@@ -2,7 +2,7 @@ use crate::std;
 use std::fmt;
 
 use crate::{
-    banknote::*, impl_default, impl_extended_ops, impl_message_ops, impl_omnibus_extended_reply,
+    banknote::*, impl_extended_ops, impl_message_ops, impl_omnibus_extended_reply,
     len::EXTENDED_NOTE_REPLY, status::*, ExtendedCommand, ExtendedCommandOps, MessageOps,
     MessageType, OmnibusReplyOps,
 };
@@ -118,7 +118,7 @@ pub mod index {
 /// | Version                 | 14          | An ASCII letter that documents the version of the note's recognition criteria.<br>This corresponds to the data in the variant identity card. | "A" |
 /// | Banknote Classification | 15          | 0x00 = Sent for any of the following:<ul><li>In response to a Host Query Extended Note Specification Command (i.e. host requests a note table element).</li><li>In response to a note escrowed or stacked event while device is in extended note mode and classification is:<ul><li>Supported by the device but disabled.</li><li>NOT supported by the device.</li></ul></li></ul><br>**SC Adv Classification**<br>**SCR Classification**<br>0x01 = Class 1 (unidentified banknote)<br>0x02 = Class 2 (suspected counterfeit)<br>0x03 = Class 3 (suspected zero value note)<br>0x04 = Class 4 (genuine banknote) | 0x00 |
 /// | Reserved                | 16..17      | Bytes reserved for future use                         | N/A                             |
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct ExtendedNoteReply {
     buf: [u8; EXTENDED_NOTE_REPLY],
 }
@@ -212,7 +212,6 @@ impl ExtendedNoteReply {
     }
 }
 
-impl_default!(ExtendedNoteReply);
 impl_message_ops!(ExtendedNoteReply);
 impl_extended_ops!(ExtendedNoteReply);
 impl_omnibus_extended_reply!(ExtendedNoteReply);

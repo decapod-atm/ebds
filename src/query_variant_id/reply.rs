@@ -2,8 +2,8 @@ use crate::std;
 use std::fmt;
 
 use crate::{
-    impl_default, impl_message_ops, impl_omnibus_nop_reply, len::QUERY_VARIANT_ID_REPLY,
-    MessageOps, MessageType, PartVersion, ProjectNumber, VariantPartNumber,
+    impl_message_ops, impl_omnibus_nop_reply, len::QUERY_VARIANT_ID_REPLY, MessageOps, MessageType,
+    PartVersion, ProjectNumber, VariantPartNumber,
 };
 
 pub mod index {
@@ -28,7 +28,7 @@ pub mod index {
 ///
 /// See [ProjectNumber](crate::ProjectNumber) for formatting details.
 #[repr(C)]
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct QueryVariantIdReply {
     buf: [u8; QUERY_VARIANT_ID_REPLY],
 }
@@ -66,7 +66,6 @@ impl QueryVariantIdReply {
     }
 }
 
-impl_default!(QueryVariantIdReply);
 impl_message_ops!(QueryVariantIdReply);
 impl_omnibus_nop_reply!(QueryVariantIdReply);
 

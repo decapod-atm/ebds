@@ -1,5 +1,5 @@
 use crate::{
-    bool_enum, impl_default, impl_extended_ops, impl_message_ops, impl_omnibus_extended_command,
+    bool_enum, impl_extended_ops, impl_message_ops, impl_omnibus_extended_command,
     len::NOTE_RETRIEVED_COMMAND, ExtendedCommand, ExtendedCommandOps, MessageOps, MessageType,
 };
 
@@ -34,7 +34,7 @@ bool_enum!(
 /// |:------|:----:|:----:|:----:|:-------:|:------:|:------:|:------:|:-------:|:----:|:---:|
 /// | Byte  | 0    | 1    | 2    | 3       | 4      | 5      | 6      | 7       | 8    | 9   |
 /// | Value | 0x02 | 0x0A | 0x7n | 0x0B    | nn     | nn     | nn     | 0x00/01 | 0x03 | zz  |
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct NoteRetrievedCommand {
     buf: [u8; NOTE_RETRIEVED_COMMAND],
 }
@@ -63,7 +63,6 @@ impl NoteRetrievedCommand {
     }
 }
 
-impl_default!(NoteRetrievedCommand);
 impl_message_ops!(NoteRetrievedCommand);
 impl_omnibus_extended_command!(NoteRetrievedCommand);
 impl_extended_ops!(NoteRetrievedCommand);
