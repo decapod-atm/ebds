@@ -60,7 +60,7 @@ impl From<&Denomination> for &'static str {
 
 impl fmt::Display for Denomination {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{}", <&'static str>::from(self))
+        write!(f, r#""{}""#, <&str>::from(self))
     }
 }
 
@@ -192,9 +192,9 @@ impl fmt::Display for StandardDenomination {
         }
 
         if has_denom {
-            write!(f, "{}", dis)
+            write!(f, r#""{dis}""#)
         } else {
-            write!(f, "None")
+            write!(f, r#""None""#)
         }
     }
 }

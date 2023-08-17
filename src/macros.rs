@@ -76,7 +76,7 @@ macro_rules! bool_enum {
 
         impl $crate::std::fmt::Display for $name {
             fn fmt(&self, f: &mut $crate::std::fmt::Formatter<'_>) -> $crate::std::fmt::Result {
-                write!(f, "{}", <&'static str>::from(self))
+                write!(f, r#""{}""#, <&str>::from(self))
             }
         }
     };

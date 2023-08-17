@@ -421,7 +421,7 @@ pub enum MessageType {
 
 impl fmt::Display for MessageType {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{}", <&'static str>::from(self))
+        write!(f, r#""{}""#, <&str>::from(self))
     }
 }
 
