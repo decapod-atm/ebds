@@ -1,6 +1,7 @@
 use crate::{
     impl_extended_ops, impl_message_ops, impl_omnibus_extended_command,
-    len::QUERY_VALUE_TABLE_COMMAND, ExtendedCommand, ExtendedCommandOps, MessageOps, MessageType,
+    len::QUERY_VALUE_TABLE_COMMAND, std::fmt, ExtendedCommand, ExtendedCommandOps, MessageOps,
+    MessageType, OmnibusCommandOps,
 };
 
 /// Query Value Table - Command (Subtype 0x06)
@@ -41,6 +42,20 @@ impl QueryValueTableCommand {
 impl_message_ops!(QueryValueTableCommand);
 impl_omnibus_extended_command!(QueryValueTableCommand);
 impl_extended_ops!(QueryValueTableCommand);
+
+impl fmt::Display for QueryValueTableCommand {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "{{")?;
+        write!(f, r#""acknak": {}, "#, self.acknak())?;
+        write!(f, r#""device_type": {}, "#, self.device_type())?;
+        write!(f, r#""message_type": {}, "#, self.message_type())?;
+        write!(f, r#""extended_command": {}, "#, self.extended_command())?;
+        write!(f, r#""denomination": {}, "#, self.denomination())?;
+        write!(f, r#""operational_mode": {}, "#, self.operational_mode())?;
+        write!(f, r#""configuration": {}"#, self.configuration())?;
+        write!(f, "}}")
+    }
+}
 
 #[cfg(test)]
 mod tests {
