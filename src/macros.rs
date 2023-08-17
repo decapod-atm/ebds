@@ -322,7 +322,7 @@ macro_rules! impl_omnibus_extended_reply {
 /// Sets all [OmnibusReplyOps](crate::OmnibusReplyOps) functions to `unimplemented` for an [AuxCommand](crate::AuxCommand) reply type.
 ///
 /// Intended to allow generalization over AuxCommand reply types as [OmnibusReplyOps](crate::OmnibusReplyOps) in contexts
-/// where calling the trait functions is not intended. For example, in [MessageVariant](crate::MessageVariant) where each
+/// where calling the trait functions is not intended. For example, in [ReplyVariant](crate::ReplyVariant) where each
 /// variant needs to implement the [OmnibusReplyOps](crate::OmnibusReplyOps) trait, but it is not necessary to actually
 /// call the trait functions.
 #[macro_export]
