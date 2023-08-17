@@ -1,5 +1,5 @@
 use crate::{
-    impl_default, impl_extended_ops, impl_message_ops, impl_omnibus_extended_command,
+    impl_extended_ops, impl_message_ops, impl_omnibus_extended_command,
     len::CLEAR_AUDIT_DATA_REQUEST, ExtendedCommand, ExtendedCommandOps, MessageOps, MessageType,
 };
 
@@ -19,6 +19,8 @@ use crate::{
 ///
 /// Since the command needs to clear large sections of memory, the command may take a few seconds to
 /// complete.
+#[repr(C)]
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct ClearAuditDataRequest {
     buf: [u8; CLEAR_AUDIT_DATA_REQUEST],
 }
@@ -37,7 +39,6 @@ impl ClearAuditDataRequest {
     }
 }
 
-impl_default!(ClearAuditDataRequest);
 impl_message_ops!(ClearAuditDataRequest);
 impl_extended_ops!(ClearAuditDataRequest);
 impl_omnibus_extended_command!(ClearAuditDataRequest);

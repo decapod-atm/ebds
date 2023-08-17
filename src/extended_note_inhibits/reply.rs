@@ -2,7 +2,7 @@ use crate::std;
 use std::fmt;
 
 use crate::{
-    impl_default, impl_extended_reply_ops, impl_message_ops, impl_omnibus_extended_reply,
+    impl_extended_reply_ops, impl_message_ops, impl_omnibus_extended_reply,
     len::EXTENDED_NOTE_INHIBITS_REPLY_ALT, ExtendedCommand, ExtendedReplyOps, MessageOps,
     MessageType, OmnibusReply,
 };
@@ -31,7 +31,7 @@ pub type ExtendedNoteInhibitsReply = OmnibusReply;
 /// **WARNING** In order to avoid possible confusion processing the extended note data, this command should
 /// only be sent when the device is in the idle state.
 #[repr(C)]
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct ExtendedNoteInhibitsReplyAlt {
     buf: [u8; EXTENDED_NOTE_INHIBITS_REPLY_ALT],
 }
@@ -51,7 +51,6 @@ impl ExtendedNoteInhibitsReplyAlt {
     }
 }
 
-impl_default!(ExtendedNoteInhibitsReplyAlt);
 impl_message_ops!(ExtendedNoteInhibitsReplyAlt);
 impl_omnibus_extended_reply!(ExtendedNoteInhibitsReplyAlt);
 impl_extended_reply_ops!(ExtendedNoteInhibitsReplyAlt);

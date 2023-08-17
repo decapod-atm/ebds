@@ -1,5 +1,5 @@
 use crate::{
-    impl_default, impl_extended_ops, impl_message_ops, impl_omnibus_extended_command,
+    impl_extended_ops, impl_message_ops, impl_omnibus_extended_command,
     len::QUERY_VALUE_TABLE_COMMAND, ExtendedCommand, ExtendedCommandOps, MessageOps, MessageType,
 };
 
@@ -17,7 +17,8 @@ use crate::{
 /// |:------|:----:|:----:|:----:|:-------:|:------:|:------:|:------:|:----:|:---:|
 /// | Byte  | 0    | 1    | 2    | 3       | 4      | 5      | 6      | 7    | 8   |
 /// | Value | 0x02 | 0x09 | 0x7n | 0x06    | nn     | nn     | nn     | 0x03 | zz  |
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[repr(C)]
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct QueryValueTableCommand {
     buf: [u8; QUERY_VALUE_TABLE_COMMAND],
 }
@@ -37,7 +38,6 @@ impl QueryValueTableCommand {
     }
 }
 
-impl_default!(QueryValueTableCommand);
 impl_message_ops!(QueryValueTableCommand);
 impl_omnibus_extended_command!(QueryValueTableCommand);
 impl_extended_ops!(QueryValueTableCommand);

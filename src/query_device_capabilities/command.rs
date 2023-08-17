@@ -2,7 +2,7 @@ use crate::std;
 use std::fmt;
 
 use crate::{
-    impl_aux_ops, impl_default, impl_message_ops, impl_omnibus_command_ops,
+    impl_aux_ops, impl_message_ops, impl_omnibus_command_ops,
     len::QUERY_DEVICE_CAPABILITIES_COMMAND, AuxCommand, AuxCommandOps, MessageOps, MessageType,
 };
 
@@ -18,7 +18,8 @@ use crate::{
 /// |:------|:----:|:----:|:----:|:------:|:------:|:-------:|:----:|:---:|
 /// | Byte  | 0    | 1    | 2    | 3      | 4      | 5       | 6    | 7   |
 /// | Value | 0x02 | 0x08 | 0x6n | 0x00   | 0x00   | 0x0D    | 0x03 | zz  |
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[repr(C)]
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct QueryDeviceCapabilitiesCommand {
     buf: [u8; QUERY_DEVICE_CAPABILITIES_COMMAND],
 }
@@ -38,7 +39,6 @@ impl QueryDeviceCapabilitiesCommand {
     }
 }
 
-impl_default!(QueryDeviceCapabilitiesCommand);
 impl_message_ops!(QueryDeviceCapabilitiesCommand);
 impl_aux_ops!(QueryDeviceCapabilitiesCommand);
 impl_omnibus_command_ops!(QueryDeviceCapabilitiesCommand);

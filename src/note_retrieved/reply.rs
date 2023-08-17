@@ -2,7 +2,7 @@ use crate::std;
 use std::fmt;
 
 use crate::{
-    bool_enum, impl_default, impl_extended_ops, impl_message_ops, impl_omnibus_extended_reply,
+    bool_enum, impl_extended_ops, impl_message_ops, impl_omnibus_extended_reply,
     len::{NOTE_RETRIEVED_EVENT, NOTE_RETRIEVED_REPLY},
     ExtendedCommand, ExtendedCommandOps, MessageOps, MessageType, OmnibusReplyOps,
 };
@@ -35,7 +35,7 @@ pub mod index {
 /// |:------|:----:|:----:|:----:|:-------:|:------:|:------:|:------:|:------:|:------:|:------:|:-------:|:----:|:---:|
 /// | Byte  | 0    | 1    | 2    | 3       | 4      | 5      | 6      | 7      | 8      | 9      | 10      | 11   | 12  |
 /// | Value | 0x02 | 0x0D | 0x7n | 0x0B    | nn     | nn     | nn     | nn     | nn     | nn     | 0x01/00 | 0x03 | zz  |
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct NoteRetrievedReply {
     buf: [u8; NOTE_RETRIEVED_REPLY],
 }
@@ -62,7 +62,6 @@ impl NoteRetrievedReply {
     }
 }
 
-impl_default!(NoteRetrievedReply);
 impl_message_ops!(NoteRetrievedReply);
 impl_omnibus_extended_reply!(NoteRetrievedReply);
 impl_extended_ops!(NoteRetrievedReply);
@@ -99,7 +98,7 @@ impl fmt::Display for NoteRetrievedReply {
 /// | Value | 0x02 | 0x0D | 0x7n | 0x0B    | nn     | nn     | nn     | nn     | nn     | nn     | 0x7F  | 0x03 | zz  |
 ///
 /// The `0x7F` for the `Event byte signifies that the note has been removed by the user.
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct NoteRetrievedEvent {
     buf: [u8; NOTE_RETRIEVED_EVENT],
 }
@@ -123,7 +122,6 @@ impl NoteRetrievedEvent {
     }
 }
 
-impl_default!(NoteRetrievedEvent);
 impl_message_ops!(NoteRetrievedEvent);
 impl_omnibus_extended_reply!(NoteRetrievedEvent);
 impl_extended_ops!(NoteRetrievedEvent);

@@ -2,9 +2,8 @@ use crate::std;
 use std::fmt;
 
 use crate::{
-    impl_aux_ops, impl_default, impl_message_ops, impl_omnibus_nop_reply,
-    len::QUERY_SOFTWARE_CRC_REPLY, seven_bit_u16, u16_seven_bit, AuxCommand, AuxCommandOps,
-    MessageOps, MessageType,
+    impl_aux_ops, impl_message_ops, impl_omnibus_nop_reply, len::QUERY_SOFTWARE_CRC_REPLY,
+    seven_bit_u16, u16_seven_bit, AuxCommand, AuxCommandOps, MessageOps, MessageType,
 };
 
 pub mod index {
@@ -47,7 +46,7 @@ pub mod index {
 /// assert_eq!(exp_crc, crc);
 /// ```
 #[repr(C)]
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct QuerySoftwareCrcReply {
     buf: [u8; QUERY_SOFTWARE_CRC_REPLY],
 }
@@ -76,7 +75,6 @@ impl QuerySoftwareCrcReply {
     }
 }
 
-impl_default!(QuerySoftwareCrcReply);
 impl_message_ops!(QuerySoftwareCrcReply);
 impl_omnibus_nop_reply!(QuerySoftwareCrcReply);
 impl_aux_ops!(QuerySoftwareCrcReply);

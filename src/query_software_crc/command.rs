@@ -1,6 +1,6 @@
 use crate::{
-    impl_aux_ops, impl_default, impl_message_ops, len::QUERY_SOFTWARE_CRC_COMMAND, AuxCommand,
-    AuxCommandOps, MessageOps, MessageType,
+    impl_aux_ops, impl_message_ops, len::QUERY_SOFTWARE_CRC_COMMAND, AuxCommand, AuxCommandOps,
+    MessageOps, MessageType,
 };
 
 /// Query Software CRC - Command (Subtype 0x00)
@@ -17,7 +17,7 @@ use crate::{
 /// | Byte  | 0    | 1    | 2    | 3      | 4      | 5       | 6    | 7   |
 /// | Value | 0x02 | 0x08 | 0x6n | 0x00   | 0x00   | 0x00    | 0x03 | zz  |
 #[repr(C)]
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct QuerySoftwareCrcCommand {
     buf: [u8; QUERY_SOFTWARE_CRC_COMMAND],
 }
@@ -36,6 +36,5 @@ impl QuerySoftwareCrcCommand {
     }
 }
 
-impl_default!(QuerySoftwareCrcCommand);
 impl_message_ops!(QuerySoftwareCrcCommand);
 impl_aux_ops!(QuerySoftwareCrcCommand);

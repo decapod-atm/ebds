@@ -2,7 +2,7 @@ use crate::std;
 use std::fmt;
 
 use crate::{
-    impl_default, impl_message_ops, impl_omnibus_nop_reply, len::QUERY_APPLICATION_ID_REPLY,
+    impl_message_ops, impl_omnibus_nop_reply, len::QUERY_APPLICATION_ID_REPLY,
     ApplicationPartNumber, MessageOps, MessageType, PartVersion, ProjectNumber,
 };
 
@@ -29,7 +29,7 @@ pub mod index {
 ///
 /// See [ProjectNumber](crate::ProjectNumber) for formatting details.
 #[repr(C)]
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct QueryApplicationIdReply {
     buf: [u8; QUERY_APPLICATION_ID_REPLY],
 }
@@ -67,7 +67,6 @@ impl QueryApplicationIdReply {
     }
 }
 
-impl_default!(QueryApplicationIdReply);
 impl_message_ops!(QueryApplicationIdReply);
 impl_omnibus_nop_reply!(QueryApplicationIdReply);
 

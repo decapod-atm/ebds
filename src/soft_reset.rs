@@ -1,6 +1,6 @@
 use crate::{
-    impl_aux_ops, impl_default, impl_message_ops, len::SOFT_RESET, AuxCommand, AuxCommandOps,
-    MessageOps, MessageType,
+    impl_aux_ops, impl_message_ops, len::SOFT_RESET, AuxCommand, AuxCommandOps, MessageOps,
+    MessageType,
 };
 
 pub mod index {
@@ -23,7 +23,7 @@ pub mod index {
 /// | Byte  | 0    | 1    | 2    | 3      | 4      | 5       | 6    | 7   |
 /// | Value | 0x02 | 0x08 | 0x6n | 0x7F   | 0x7F   | 0x7F    | 0x03 | zz  |
 #[repr(C)]
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct SoftReset {
     buf: [u8; SOFT_RESET],
 }
@@ -48,7 +48,6 @@ impl SoftReset {
     }
 }
 
-impl_default!(SoftReset);
 impl_message_ops!(SoftReset);
 impl_aux_ops!(SoftReset);
 

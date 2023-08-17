@@ -1,6 +1,6 @@
 use crate::{
-    impl_aux_ops, impl_default, impl_message_ops, len::QUERY_APPLICATION_ID_COMMAND, AuxCommand,
-    AuxCommandOps, MessageOps, MessageType,
+    impl_aux_ops, impl_message_ops, len::QUERY_APPLICATION_ID_COMMAND, AuxCommand, AuxCommandOps,
+    MessageOps, MessageType,
 };
 
 /// Query Application ID - Command (Subtype 0x0E)
@@ -23,7 +23,7 @@ use crate::{
 /// | Byte  | 0    | 1    | 2    | 3      | 4      | 5       | 6    | 7   |
 /// | Value | 0x02 | 0x08 | 0x6n | 0x00   | 0x00   | 0x0E    | 0x03 | zz  |
 #[repr(C)]
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct QueryApplicationIdCommand {
     buf: [u8; QUERY_APPLICATION_ID_COMMAND],
 }
@@ -42,7 +42,6 @@ impl QueryApplicationIdCommand {
     }
 }
 
-impl_default!(QueryApplicationIdCommand);
 impl_message_ops!(QueryApplicationIdCommand);
 impl_aux_ops!(QueryApplicationIdCommand);
 

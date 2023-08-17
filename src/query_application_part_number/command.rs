@@ -1,6 +1,6 @@
 use crate::{
-    impl_aux_ops, impl_default, impl_message_ops, len::QUERY_APPLICATION_PART_NUMBER_COMMAND,
-    AuxCommand, AuxCommandOps, MessageOps, MessageType,
+    impl_aux_ops, impl_message_ops, len::QUERY_APPLICATION_PART_NUMBER_COMMAND, AuxCommand,
+    AuxCommandOps, MessageOps, MessageType,
 };
 
 /// Query Application Part Number - Command (Subtype 0x07)
@@ -15,7 +15,7 @@ use crate::{
 /// | Byte  | 0    | 1    | 2    | 3      | 4      | 5       | 6    | 7   |
 /// | Value | 0x02 | 0x08 | 0x6n | 0x00   | 0x00   | 0x07    | 0x03 | zz  |
 #[repr(C)]
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct QueryApplicationPartNumberCommand {
     buf: [u8; QUERY_APPLICATION_PART_NUMBER_COMMAND],
 }
@@ -34,7 +34,6 @@ impl QueryApplicationPartNumberCommand {
     }
 }
 
-impl_default!(QueryApplicationPartNumberCommand);
 impl_message_ops!(QueryApplicationPartNumberCommand);
 impl_aux_ops!(QueryApplicationPartNumberCommand);
 

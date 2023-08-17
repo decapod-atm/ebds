@@ -2,8 +2,8 @@ use crate::std;
 use std::fmt;
 
 use crate::{
-    impl_default, impl_message_ops, impl_omnibus_nop_reply, len::QUERY_DEVICE_CAPABILITIES_REPLY,
-    MessageOps, MessageType,
+    impl_message_ops, impl_omnibus_nop_reply, len::QUERY_DEVICE_CAPABILITIES_REPLY, MessageOps,
+    MessageType,
 };
 
 pub mod index {
@@ -17,7 +17,7 @@ pub mod index {
 
 bitfield! {
     /// First set of device capabilties
-    #[derive(Clone, Copy, Debug, PartialEq)]
+    #[derive(Clone, Copy, Debug, Default, PartialEq)]
     pub struct Cap0(u8);
     u8;
     /// **OBSOLETE** Extended PUP mode is supported.
@@ -78,7 +78,7 @@ impl From<Cap0> for u8 {
 
 bitfield! {
     /// Second set of device capabilties
-    #[derive(Clone, Copy, Debug, PartialEq)]
+    #[derive(Clone, Copy, Debug, Default, PartialEq)]
     pub struct Cap1(u8);
     u8;
     /// Note Retrieved is supported.
@@ -135,7 +135,7 @@ bitfield! {
     ///
     /// Note: **SCR Classification** If banknote classification is supported (i.e. Cap Byte 3, bit 1 is set), all denomination
     /// recycling bits will be set to 0.
-    #[derive(Clone, Copy, Debug, PartialEq)]
+    #[derive(Clone, Copy, Debug, Default, PartialEq)]
     pub struct Cap2(u8);
     u8;
     /// 1 Denomination recycling is supported.
@@ -209,7 +209,7 @@ impl From<Cap2> for u8 {
 
 bitfield! {
     /// Fourth set of device capabilties
-    #[derive(Clone, Copy, Debug, PartialEq)]
+    #[derive(Clone, Copy, Debug, Default, PartialEq)]
     pub struct Cap3(u8);
     u8;
     /// Customer Configuration Options Set/Query (Msg 6 Subtypes 0x25 and 0x26) are supported.
@@ -249,7 +249,7 @@ impl From<Cap3> for u8 {
 
 bitfield! {
     /// Fifth set of device capabilties
-    #[derive(Clone, Copy, Debug, PartialEq)]
+    #[derive(Clone, Copy, Debug, Default, PartialEq)]
     pub struct Cap4(u8);
     u8;
     /// RFU
@@ -282,7 +282,7 @@ impl From<Cap4> for u8 {
 
 bitfield! {
     /// Sixth set of device capabilties
-    #[derive(Clone, Copy, Debug, PartialEq)]
+    #[derive(Clone, Copy, Debug, Default, PartialEq)]
     pub struct Cap5(u8);
     u8;
     /// RFU
@@ -333,7 +333,8 @@ impl From<Cap5> for u8 {
 /// * [Cap3]
 /// * [Cap4] - RFU
 /// * [Cap5] - RFU
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[repr(C)]
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct QueryDeviceCapabilitiesReply {
     buf: [u8; QUERY_DEVICE_CAPABILITIES_REPLY],
 }
@@ -382,7 +383,6 @@ impl QueryDeviceCapabilitiesReply {
     }
 }
 
-impl_default!(QueryDeviceCapabilitiesReply);
 impl_message_ops!(QueryDeviceCapabilitiesReply);
 impl_omnibus_nop_reply!(QueryDeviceCapabilitiesReply);
 

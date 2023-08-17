@@ -6,8 +6,9 @@ use std::fmt;
 
 /// Cash denominations
 #[repr(u32)]
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub enum Denomination {
+    #[default]
     Zero = 0,
     One = 1,
     Two = 2,
@@ -96,7 +97,7 @@ impl From<Denomination> for u32 {
 
 bitfield! {
     /// Enable/disable note denominations while in base note mode
-    #[derive(Clone, Copy, Debug, PartialEq)]
+    #[derive(Clone, Copy, Debug, Default, PartialEq)]
     pub struct StandardDenomination(u8);
     u8;
     pub one, set_one: 0;
@@ -224,7 +225,7 @@ impl From<StandardDenominationFlag> for StandardDenomination {
 
 /// Bit flags for [StandardDenomination]s.
 #[repr(u8)]
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub enum StandardDenominationFlag {
     Denom1 = 0b000_0001,
     Denom2 = 0b000_0010,
@@ -233,11 +234,13 @@ pub enum StandardDenominationFlag {
     Denom5 = 0b001_0000,
     Denom6 = 0b010_0000,
     Denom7 = 0b100_0000,
+    #[default]
     Zero = 0b000_0000,
 }
 
 impl StandardDenominationFlag {
-    pub const fn default() -> Self {
+    /// Creates a new [StandardDenominationFlag].
+    pub const fn new() -> Self {
         Self::Zero
     }
 }

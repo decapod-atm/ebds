@@ -1,5 +1,5 @@
 use crate::{
-    impl_default, impl_extended_ops, impl_message_ops, impl_omnibus_extended_command,
+    impl_extended_ops, impl_message_ops, impl_omnibus_extended_command,
     len::SET_ESCROW_TIMEOUT_COMMAND, ExtendedCommand, ExtendedCommandOps, MessageOps, MessageType,
 };
 
@@ -25,6 +25,8 @@ const TIMEOUT_MASK: u8 = 0x7f;
 /// |:------|:----:|:----:|:----:|:-------:|:------:|:------:|:------:|:-----:|:-------:|:----:|:---:|
 /// | Byte  | 0    | 1    | 2    | 3       | 4      | 5      | 6      | 7     | 8       | 9    | 10  |
 /// | Value | 0x02 | 0x0B | 0x7n | 0x04    | nn     | nn     | nn     | nn    | nn      | 0x03 | zz  |
+#[repr(C)]
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct SetEscrowTimeoutCommand {
     buf: [u8; SET_ESCROW_TIMEOUT_COMMAND],
 }
@@ -72,7 +74,6 @@ impl SetEscrowTimeoutCommand {
     }
 }
 
-impl_default!(SetEscrowTimeoutCommand);
 impl_message_ops!(SetEscrowTimeoutCommand);
 impl_extended_ops!(SetEscrowTimeoutCommand);
 impl_omnibus_extended_command!(SetEscrowTimeoutCommand);

@@ -1,13 +1,13 @@
 use crate::std::fmt;
 
 use crate::{
-    banknote::{BanknoteOrientation, NoteTableItem},
+    banknote::{Banknote, BanknoteOrientation, NoteTableItem},
     denomination::StandardDenomination,
 };
 
 /// An accepted [NoteTableItem].
 #[repr(C)]
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct AcceptedNoteTableItem {
     note_table_item: NoteTableItem,
     banknote_orientation: BanknoteOrientation,
@@ -25,10 +25,10 @@ impl AcceptedNoteTableItem {
         }
     }
 
-    /// Creates a default [AcceptedNoteTableItem].
-    pub const fn default() -> Self {
+    /// Creates a new null [AcceptedNoteTableItem].
+    pub const fn null() -> Self {
         Self {
-            note_table_item: NoteTableItem::default(),
+            note_table_item: NoteTableItem::new(0, Banknote::null()),
             banknote_orientation: BanknoteOrientation::default(),
         }
     }
@@ -68,7 +68,7 @@ impl fmt::Display for AcceptedNoteTableItem {
 
 /// Values that represent document events.
 #[repr(u8)]
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub enum DocumentEvent {
     DispensedEvent = 0,
     EscrowedEvent = 1,
@@ -78,12 +78,13 @@ pub enum DocumentEvent {
     StackedEvent = 5,
     MissingNoteReportReadyEvent = 6,
     EscrowSessionSummaryReportReadyEvent = 7,
+    #[default]
     NoneEvent = 8,
 }
 
 impl DocumentEvent {
     /// Creates a default [DocumentEvent].
-    pub const fn default() -> Self {
+    pub const fn new() -> Self {
         Self::NoneEvent
     }
 }
@@ -120,8 +121,9 @@ impl fmt::Display for DocumentEvent {
 
 /// Values that represent document routing directions.
 #[repr(u8)]
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub enum DocumentRouting {
+    #[default]
     NoRoute = 0,
     EscrowToRecycler = 1,
     RecyclerToCashbox = 2,
@@ -134,7 +136,7 @@ pub enum DocumentRouting {
 
 impl DocumentRouting {
     /// Creates a default [DocumentRouting].
-    pub const fn default() -> Self {
+    pub const fn new() -> Self {
         Self::NoRoute
     }
 }
@@ -168,7 +170,7 @@ impl fmt::Display for DocumentRouting {
 
 /// A document status.
 #[repr(C)]
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct DocumentStatus {
     /// The [DocumentEvent].
     document_event: DocumentEvent,
@@ -206,16 +208,6 @@ impl DocumentStatus {
             document_routing,
             accepted_note_table_item,
             standard_denomination,
-        }
-    }
-
-    /// Creates a default [DocumentStatus].
-    pub const fn default() -> Self {
-        Self {
-            document_event: DocumentEvent::default(),
-            document_routing: DocumentRouting::default(),
-            accepted_note_table_item: AcceptedNoteTableItem::default(),
-            standard_denomination: StandardDenomination::none(),
         }
     }
 

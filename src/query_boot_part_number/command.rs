@@ -1,6 +1,6 @@
 use crate::{
-    impl_aux_ops, impl_default, impl_message_ops, len::QUERY_BOOT_PART_NUMBER_COMMAND, AuxCommand,
-    AuxCommandOps, MessageOps, MessageType,
+    impl_aux_ops, impl_message_ops, len::QUERY_BOOT_PART_NUMBER_COMMAND, AuxCommand, AuxCommandOps,
+    MessageOps, MessageType,
 };
 
 /// Query Boot Part Number - Command (Subtype 0x06)
@@ -15,7 +15,7 @@ use crate::{
 /// | Byte  | 0    | 1    | 2    | 3      | 4      | 5       | 6    | 7   |
 /// | Value | 0x02 | 0x08 | 0x6n | 0x00   | 0x00   | 0x06    | 0x03 | zz  |
 #[repr(C)]
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct QueryBootPartNumberCommand {
     buf: [u8; QUERY_BOOT_PART_NUMBER_COMMAND],
 }
@@ -34,7 +34,6 @@ impl QueryBootPartNumberCommand {
     }
 }
 
-impl_default!(QueryBootPartNumberCommand);
 impl_message_ops!(QueryBootPartNumberCommand);
 impl_aux_ops!(QueryBootPartNumberCommand);
 

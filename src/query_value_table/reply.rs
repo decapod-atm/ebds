@@ -9,7 +9,7 @@ use crate::{
 
 /// Represents a denomination in non-extended mode.
 #[repr(C)]
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct BaseDenomination {
     /// Note value index reported starting with '1' and ending with '7'.
     note_index: usize,

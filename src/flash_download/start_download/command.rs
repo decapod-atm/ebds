@@ -1,6 +1,5 @@
 use crate::{
-    impl_default, impl_message_ops, len::START_DOWNLOAD_COMMAND, ExtendedNoteReporting, MessageOps,
-    MessageType,
+    impl_message_ops, len::START_DOWNLOAD_COMMAND, ExtendedNoteReporting, MessageOps, MessageType,
 };
 
 pub mod index {
@@ -17,7 +16,7 @@ pub mod index {
 /// |------|------|------|-------|-------|---------|------|------|
 /// | 0x02 | 0x08 | 0x5n | 0x00  | 0x00  | 0x00/10 | 0x03 | zz   |
 #[repr(C)]
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct StartDownloadCommand {
     buf: [u8; START_DOWNLOAD_COMMAND],
 }
@@ -49,7 +48,6 @@ impl StartDownloadCommand {
     }
 }
 
-impl_default!(StartDownloadCommand);
 impl_message_ops!(StartDownloadCommand);
 
 #[cfg(test)]
