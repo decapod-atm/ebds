@@ -1,6 +1,6 @@
 use crate::{
-    impl_aux_ops, impl_message_ops, len::QUERY_APPLICATION_PART_NUMBER_COMMAND, AuxCommand,
-    AuxCommandOps, MessageOps, MessageType,
+    impl_aux_ops, impl_message_ops, len::QUERY_APPLICATION_PART_NUMBER_COMMAND, std::fmt,
+    AuxCommand, AuxCommandOps, MessageOps, MessageType,
 };
 
 /// Query Application Part Number - Command (Subtype 0x07)
@@ -36,6 +36,17 @@ impl QueryApplicationPartNumberCommand {
 
 impl_message_ops!(QueryApplicationPartNumberCommand);
 impl_aux_ops!(QueryApplicationPartNumberCommand);
+
+impl fmt::Display for QueryApplicationPartNumberCommand {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "{{")?;
+        write!(f, r#""acknak": {}, "#, self.acknak())?;
+        write!(f, r#""device_type": {}, "#, self.device_type())?;
+        write!(f, r#""message_type": {}, "#, self.message_type())?;
+        write!(f, r#""aux_command": {}"#, self.aux_command())?;
+        write!(f, "}}")
+    }
+}
 
 #[cfg(test)]
 mod tests {

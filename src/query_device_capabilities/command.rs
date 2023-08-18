@@ -1,9 +1,7 @@
-use crate::std;
-use std::fmt;
-
 use crate::{
     impl_aux_ops, impl_message_ops, impl_omnibus_command_ops,
-    len::QUERY_DEVICE_CAPABILITIES_COMMAND, AuxCommand, AuxCommandOps, MessageOps, MessageType,
+    len::QUERY_DEVICE_CAPABILITIES_COMMAND, std::fmt, AuxCommand, AuxCommandOps, MessageOps,
+    MessageType, OmnibusCommandOps,
 };
 
 /// Query Device Capabilities - Command (Subtype 0x0D)
@@ -45,15 +43,15 @@ impl_omnibus_command_ops!(QueryDeviceCapabilitiesCommand);
 
 impl fmt::Display for QueryDeviceCapabilitiesCommand {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(
-            f,
-            "AckNak: {}, DeviceType: {}, MessageType: {}, Command: {}, Checksum: {}",
-            self.acknak(),
-            self.device_type(),
-            self.message_type(),
-            self.aux_command(),
-            self.checksum(),
-        )
+        write!(f, "{{")?;
+        write!(f, r#""acknak": {}, "#, self.acknak())?;
+        write!(f, r#""device_type": {}, "#, self.device_type())?;
+        write!(f, r#""message_type": {}, "#, self.message_type())?;
+        write!(f, r#""aux_command": {}, "#, self.aux_command())?;
+        write!(f, r#""denomination": {}, "#, self.denomination())?;
+        write!(f, r#""operational_mode": {}, "#, self.operational_mode())?;
+        write!(f, r#""configuration": {}"#, self.configuration())?;
+        write!(f, "}}")
     }
 }
 

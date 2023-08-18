@@ -77,7 +77,7 @@ impl From<&AuxCommand> for u8 {
 
 impl fmt::Display for AuxCommand {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{}", <&'static str>::from(self))
+        write!(f, r#""{}""#, <&str>::from(self))
     }
 }
 

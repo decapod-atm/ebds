@@ -1,6 +1,6 @@
 use crate::{
     impl_extended_ops, impl_message_ops, impl_omnibus_extended_command,
-    len::QUERY_EXTENDED_NOTE_SPECIFICATION, ExtendedCommand, ExtendedCommandOps,
+    len::QUERY_EXTENDED_NOTE_SPECIFICATION, std::fmt, ExtendedCommand, ExtendedCommandOps,
     ExtendedNoteReporting, MessageOps, MessageType, OmnibusCommandOps,
 };
 
@@ -58,6 +58,21 @@ impl QueryExtendedNoteSpecification {
 impl_message_ops!(QueryExtendedNoteSpecification);
 impl_extended_ops!(QueryExtendedNoteSpecification);
 impl_omnibus_extended_command!(QueryExtendedNoteSpecification);
+
+impl fmt::Display for QueryExtendedNoteSpecification {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "{{")?;
+        write!(f, r#""acknak": {}, "#, self.acknak())?;
+        write!(f, r#""device_type": {}, "#, self.device_type())?;
+        write!(f, r#""message_type": {}, "#, self.message_type())?;
+        write!(f, r#""extended_command": {}, "#, self.extended_command())?;
+        write!(f, r#""denomination": {}, "#, self.denomination())?;
+        write!(f, r#""operational_mode": {}, "#, self.operational_mode())?;
+        write!(f, r#""configuration": {}, "#, self.configuration())?;
+        write!(f, r#""note_index": {}"#, self.note_index())?;
+        write!(f, "}}")
+    }
+}
 
 #[cfg(test)]
 mod tests {

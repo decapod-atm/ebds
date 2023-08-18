@@ -75,7 +75,7 @@ impl From<&ExtendedCommand> for &'static str {
 
 impl fmt::Display for ExtendedCommand {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{}", <&'static str>::from(self))
+        write!(f, r#""{}""#, <&str>::from(self))
     }
 }
 

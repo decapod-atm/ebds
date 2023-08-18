@@ -4,6 +4,7 @@ use crate::{
     error::{Error, Result},
     impl_default, impl_extended_ops, impl_message_ops, impl_omnibus_extended_command,
     len::SET_EXTENDED_NOTE_INHIBITS_BASE,
+    std::fmt,
     ExtendedCommand, ExtendedCommandOps, ExtendedNoteReporting, MessageOps, MessageType,
     OmnibusCommandOps,
 };
@@ -24,8 +25,8 @@ pub mod index {
 bitfield! {
     /// Represents enabled notes in the extended note table.
     #[derive(Clone, Copy, Debug, Default, PartialEq)]
-    pub struct EnableNote(u8);
-    u8;
+    pub struct EnableNote(u16);
+    u16;
     pub note1, set_note1: 0;
     pub note2, set_note2: 1;
     pub note3, set_note3: 2;
@@ -33,6 +34,7 @@ bitfield! {
     pub note5, set_note5: 4;
     pub note6, set_note6: 5;
     pub note7, set_note7: 6;
+    pub note_index, set_note_index: 15, 7;
 }
 
 impl EnableNote {
@@ -45,7 +47,7 @@ impl EnableNote {
 
     /// Creates an [EnableNote] with all bits set.
     pub const fn all() -> Self {
-        Self(bitmask::ENABLE_NOTE)
+        Self(bitmask::ENABLE_NOTE as u16)
     }
 
     /// Get the length of the [EnableNote] bitfield.
@@ -73,7 +75,7 @@ impl EnableNote {
 
 impl From<&[bool]> for EnableNote {
     fn from(b: &[bool]) -> Self {
-        let mut inner = 0u8;
+        let mut inner = 0u16;
         // only allow a max of
         let end = std::cmp::min(b.len(), Self::len());
         for (i, &set) in b[..end].iter().enumerate() {
@@ -98,19 +100,35 @@ impl<const N: usize> From<[bool; N]> for EnableNote {
 
 impl From<u8> for EnableNote {
     fn from(b: u8) -> Self {
-        Self(b & bitmask::ENABLE_NOTE)
+        Self((b & bitmask::ENABLE_NOTE) as u16)
     }
 }
 
 impl From<&EnableNote> for u8 {
     fn from(e: &EnableNote) -> u8 {
-        e.0
+        (e.0 & 0xff) as u8
     }
 }
 
 impl From<EnableNote> for u8 {
     fn from(e: EnableNote) -> u8 {
         (&e).into()
+    }
+}
+
+impl fmt::Display for EnableNote {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        let idx = self.note_index();
+
+        write!(f, "{{")?;
+        write!(f, r#""note_{idx}": {}, "#, self.note1())?;
+        write!(f, r#""note_{}": {}, "#, idx.saturating_add(1), self.note2())?;
+        write!(f, r#""note_{}": {}, "#, idx.saturating_add(2), self.note3())?;
+        write!(f, r#""note_{}": {}, "#, idx.saturating_add(3), self.note4())?;
+        write!(f, r#""note_{}": {}, "#, idx.saturating_add(4), self.note5())?;
+        write!(f, r#""note_{}": {}, "#, idx.saturating_add(5), self.note6())?;
+        write!(f, r#""note_{}": {}"#, idx.saturating_add(6), self.note7())?;
+        write!(f, "}}")
     }
 }
 
@@ -234,6 +252,29 @@ impl<const M: usize, const N: usize> SetExtendedNoteInhibits<M, N> {
     }
 }
 
+impl<const M: usize, const N: usize> fmt::Display for SetExtendedNoteInhibits<M, N> {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "{{")?;
+        write!(f, r#""message_type": {}, "#, self.message_type())?;
+        write!(f, r#""extended_command": {}, "#, self.extended_command())?;
+        write!(f, r#""denomination": {}, "#, self.denomination())?;
+        write!(f, r#""operational_mode": {}, "#, self.operational_mode())?;
+        write!(f, r#""configuration": {}, "#, self.configuration())?;
+        write!(f, r#""enabled_notes": ["#)?;
+
+        let mut notes = self.enabled_notes();
+        for (i, note) in notes.iter_mut().enumerate() {
+            if i != 0 {
+                write!(f, ", ")?;
+            }
+            note.set_note_index(((i * 7) + 1) as u16);
+            write!(f, "{note}")?;
+        }
+
+        write!(f, "]}}")
+    }
+}
+
 pub const CFSC_ENABLE_FULL_LEN: usize = SET_EXTENDED_NOTE_INHIBITS_BASE + CFSC_ENABLE_LEN;
 pub const SC_ENABLE_FULL_LEN: usize = SET_EXTENDED_NOTE_INHIBITS_BASE + SC_ENABLE_LEN;
 
@@ -309,6 +350,16 @@ mod tests {
         ];
 
         assert_eq!(msg.enabled_notes(), exp_enabled);
+
+        Ok(())
+    }
+
+    #[test]
+    fn test_display() -> Result<()> {
+        let enabled = SetExtendedNoteInhibitsCFSC::new();
+        let enabled_disp = r#"{"message_type": "Extended", "extended_command": "SetExtendedNoteInhibits", "denomination": "None", "operational_mode": {"orientation_control": "one way", "escrow_mode": "unset", "document_stack": "unset", "document_return": "unset"}, "configuration": {"no_push": "unset", "barcode": "unset", "power_up": "a", "extended_note": "set", "extended_coupon": "unset"}, "enabled_notes": [{"note_1": false, "note_2": false, "note_3": false, "note_4": false, "note_5": false, "note_6": false, "note_7": false}, {"note_8": false, "note_9": false, "note_10": false, "note_11": false, "note_12": false, "note_13": false, "note_14": false}, {"note_15": false, "note_16": false, "note_17": false, "note_18": false, "note_19": false, "note_20": false, "note_21": false}, {"note_22": false, "note_23": false, "note_24": false, "note_25": false, "note_26": false, "note_27": false, "note_28": false}, {"note_29": false, "note_30": false, "note_31": false, "note_32": false, "note_33": false, "note_34": false, "note_35": false}, {"note_36": false, "note_37": false, "note_38": false, "note_39": false, "note_40": false, "note_41": false, "note_42": false}, {"note_43": false, "note_44": false, "note_45": false, "note_46": false, "note_47": false, "note_48": false, "note_49": false}, {"note_50": false, "note_51": false, "note_52": false, "note_53": false, "note_54": false, "note_55": false, "note_56": false}]}"#;
+
+        assert_eq!(format!("{enabled}").as_str(), enabled_disp);
 
         Ok(())
     }

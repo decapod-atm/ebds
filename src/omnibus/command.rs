@@ -3,6 +3,7 @@ use bitfield::bitfield;
 use crate::{
     bool_enum, impl_message_ops, impl_omnibus_command_ops,
     len::{FLASH_DATA_PACKET, OMNIBUS_COMMAND},
+    std::fmt,
     FlashDownloadMessage, MessageOps, MessageType, StandardDenomination,
 };
 
@@ -63,6 +64,33 @@ impl From<u8> for OperationalMode {
     }
 }
 
+impl fmt::Display for OperationalMode {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "{{")?;
+        write!(
+            f,
+            r#""orientation_control": {}, "#,
+            OrientationControl::from(self.orientation_control())
+        )?;
+        write!(
+            f,
+            r#""escrow_mode": {}, "#,
+            EscrowMode::from(self.escrow_mode())
+        )?;
+        write!(
+            f,
+            r#""document_stack": {}, "#,
+            DocumentStack::from(self.document_stack())
+        )?;
+        write!(
+            f,
+            r#""document_return": {}"#,
+            DocumentReturn::from(self.document_return())
+        )?;
+        write!(f, "}}")
+    }
+}
+
 /// Controls which bill orientation is accepted
 #[repr(u8)]
 #[derive(Clone, Copy, Debug, Default, PartialEq)]
@@ -82,20 +110,42 @@ impl From<u8> for OrientationControl {
             0b00 => Self::OneWay,
             0b01 => Self::TwoWay,
             0b10 | 0b11 => Self::FourWay,
-            _ => unreachable!("invalid OrientationControl"),
+            _ => Self::FourWay,
         }
     }
 }
 
 impl From<OrientationControl> for u8 {
-    fn from(o: OrientationControl) -> Self {
-        o as u8
+    fn from(val: OrientationControl) -> Self {
+        val as u8
     }
 }
 
 impl From<&OrientationControl> for u8 {
-    fn from(o: &OrientationControl) -> Self {
-        (*o).into()
+    fn from(val: &OrientationControl) -> Self {
+        (*val).into()
+    }
+}
+
+impl From<&OrientationControl> for &'static str {
+    fn from(val: &OrientationControl) -> Self {
+        match val {
+            OrientationControl::OneWay => "one way",
+            OrientationControl::TwoWay => "two way",
+            OrientationControl::FourWay => "four way",
+        }
+    }
+}
+
+impl fmt::Display for OrientationControl {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, r#""{}""#, <&str>::from(self))
+    }
+}
+
+impl From<OrientationControl> for &'static str {
+    fn from(val: OrientationControl) -> Self {
+        (&val).into()
     }
 }
 
@@ -182,6 +232,26 @@ impl From<u8> for Configuration {
     }
 }
 
+impl fmt::Display for Configuration {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "{{")?;
+        write!(f, r#""no_push": {}, "#, NoPush::from(self.no_push()))?;
+        write!(f, r#""barcode": {}, "#, Barcode::from(self.barcode()))?;
+        write!(f, r#""power_up": {}, "#, PowerUp::from(self.power_up()))?;
+        write!(
+            f,
+            r#""extended_note": {}, "#,
+            ExtendedNoteReporting::from(self.extended_note())
+        )?;
+        write!(
+            f,
+            r#""extended_coupon": {}"#,
+            ExtendedCouponReporting::from(self.extended_coupon())
+        )?;
+        write!(f, "}}")
+    }
+}
+
 bool_enum!(
     NoPush,
     r"
@@ -240,6 +310,29 @@ impl From<u8> for PowerUp {
             0b10 => Self::B,
             _ => Self::Reserved,
         }
+    }
+}
+
+impl From<&PowerUp> for &'static str {
+    fn from(val: &PowerUp) -> Self {
+        match val {
+            PowerUp::A => "a",
+            PowerUp::B => "b",
+            PowerUp::C => "c",
+            PowerUp::Reserved => "reserved",
+        }
+    }
+}
+
+impl From<PowerUp> for &'static str {
+    fn from(val: PowerUp) -> Self {
+        (&val).into()
+    }
+}
+
+impl fmt::Display for PowerUp {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, r#""{}""#, <&str>::from(self))
     }
 }
 
@@ -490,6 +583,19 @@ pub trait OmnibusCommandOps: MessageOps {
 
 impl_message_ops!(OmnibusCommand);
 impl_omnibus_command_ops!(OmnibusCommand);
+
+impl fmt::Display for OmnibusCommand {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "{{")?;
+        write!(f, r#""acknak": {}, "#, self.acknak())?;
+        write!(f, r#""device_type": {}, "#, self.device_type())?;
+        write!(f, r#""message_type": {}, "#, self.message_type())?;
+        write!(f, r#""denomination": {}, "#, self.denomination())?;
+        write!(f, r#""operational_mode": {}, "#, self.operational_mode())?;
+        write!(f, r#""configuration": {}"#, self.configuration())?;
+        write!(f, "}}")
+    }
+}
 
 // Implements FlashDownloadMessage to allow using OmnibusCommand in
 // `AcceptorDeviceHandle::poll_flash_download`

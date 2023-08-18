@@ -76,7 +76,7 @@ macro_rules! bool_enum {
 
         impl $crate::std::fmt::Display for $name {
             fn fmt(&self, f: &mut $crate::std::fmt::Formatter<'_>) -> $crate::std::fmt::Result {
-                write!(f, "{}", <&'static str>::from(self))
+                write!(f, r#""{}""#, <&str>::from(self))
             }
         }
     };
@@ -322,7 +322,7 @@ macro_rules! impl_omnibus_extended_reply {
 /// Sets all [OmnibusReplyOps](crate::OmnibusReplyOps) functions to `unimplemented` for an [AuxCommand](crate::AuxCommand) reply type.
 ///
 /// Intended to allow generalization over AuxCommand reply types as [OmnibusReplyOps](crate::OmnibusReplyOps) in contexts
-/// where calling the trait functions is not intended. For example, in [MessageVariant](crate::MessageVariant) where each
+/// where calling the trait functions is not intended. For example, in [ReplyVariant](crate::ReplyVariant) where each
 /// variant needs to implement the [OmnibusReplyOps](crate::OmnibusReplyOps) trait, but it is not necessary to actually
 /// call the trait functions.
 #[macro_export]
@@ -571,6 +571,47 @@ macro_rules! impl_default {
         {
             fn default() -> Self {
                 Self::new()
+            }
+        }
+    };
+}
+
+/// Provides convenience functions to deconstruct an enum with new-type variants.
+#[macro_export]
+macro_rules! inner_enum {
+    // macro variant for when the enum variant and its type are the same ident
+    ($ty:ident, $var:ident) => {
+        inner_enum!($ty, $var, $var);
+    };
+
+    // macro variant for when the enum variant and its type are potentially different
+    ($ty:ident, $var:ident, $var_ty:ident) => {
+        impl $ty {
+            ::paste::paste! {
+                #[doc = "Gets whether `" $ty "` is the variant `" $var "`."]
+                pub fn [<is_ $var:snake>](&self) -> bool {
+                    matches!(self, $ty::$var(_))
+                }
+
+                #[doc = "Gets a reference to `" $ty "` as the variant `" $var "`'s inner type `" $var_ty "`."]
+                pub fn [<as_ $var:snake>](&self) -> $crate::Result<&$var_ty> {
+                    use $crate::Error;
+
+                    match self {
+                        $ty::$var(ty) => Ok(ty),
+                        _ => Err(Error::failure(format!("have variant: {self}, expected: {}", $crate::std::any::type_name::<$var>()))),
+                    }
+                }
+
+                #[doc = "Converts `" $ty "` into the variant `" $var "`'s inner type `" $var_ty "`."]
+                pub fn [<into_ $var:snake>](self) -> $crate::Result<$var_ty> {
+                    use $crate::Error;
+
+                    match self {
+                        $ty::$var(ty) => Ok(ty),
+                        _ => Err(Error::failure(format!("have variant: {self}, expected: {}", $crate::std::any::type_name::<$var>()))),
+                    }
+                }
             }
         }
     };
