@@ -100,3 +100,8 @@ jobs:
           GITHUB_ACTIONS_OS: ${{matrix.os}}
           RUST_TARGET: ${{matrix.target.rust}}
         run: cargo test --all --release
+      - name: Run all the fuzz tests (debug)
+        env:
+          GITHUB_ACTIONS_OS: ubuntu-latest
+          UST_TARGET: ${{matrix.target.rust}}
+        run: bash scripts/fuzz-runner.sh

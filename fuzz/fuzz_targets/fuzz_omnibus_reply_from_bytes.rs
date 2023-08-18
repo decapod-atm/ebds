@@ -2,7 +2,7 @@
 
 use libfuzzer_sys::fuzz_target;
 
-use ebds::{OmnibusReply, MessageOps, MessageType, len};
+use ebds::{OmnibusReply, MessageOps, len};
 
 fuzz_target!(|data: &[u8]| {
     if data.len() < len::OMNIBUS_REPLY {return}

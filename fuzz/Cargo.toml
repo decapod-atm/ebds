@@ -22,12 +22,6 @@ members = ["."]
 debug = 1
 
 [[bin]]
-name = "fuzz_method"
-path = "fuzz_targets/fuzz_method.rs"
-test = false
-doc = false
-
-[[bin]]
 name = "fuzz_omnibus_reply"
 path = "fuzz_targets/fuzz_omnibus_reply.rs"
 test = false
