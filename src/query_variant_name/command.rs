@@ -45,15 +45,12 @@ impl_aux_ops!(QueryVariantNameCommand);
 
 impl fmt::Display for QueryVariantNameCommand {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(
-            f,
-            "AckNak: {}, DeviceType: {}, MessageType: {}, Command: {}, Checksum: {}",
-            self.acknak(),
-            self.device_type(),
-            self.message_type(),
-            self.aux_command(),
-            self.checksum(),
-        )
+        write!(f, "{{")?;
+        write!(f, r#""acknak": {}, "#, self.acknak())?;
+        write!(f, r#""device_type": {}, "#, self.device_type())?;
+        write!(f, r#""message_type": {}, "#, self.message_type())?;
+        write!(f, r#""aux_command": {}"#, self.aux_command())?;
+        write!(f, "}}")
     }
 }
 
