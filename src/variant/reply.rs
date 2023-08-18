@@ -2,8 +2,8 @@ use crate::{
     index, inner_enum, len, std::fmt, AdvancedBookmarkModeReply, AuxCommand, Banknote,
     BaudRateChangeReply, ClearAuditDataRequestAck, ClearAuditDataRequestResults, Control,
     DocumentStatus, Error, ExtendedCommand, ExtendedNoteInhibitsReplyAlt, ExtendedNoteReply,
-    FlashDownloadReply7bit, FlashDownloadReply8bit, MessageOps, MessageType, NoteRetrievedEvent,
-    NoteRetrievedReply, OmnibusReply, OmnibusReplyOps, QueryApplicationIdReply,
+    FlashDownloadReply, FlashDownloadReply7bit, FlashDownloadReply8bit, MessageOps, MessageType,
+    NoteRetrievedEvent, NoteRetrievedReply, OmnibusReply, OmnibusReplyOps, QueryApplicationIdReply,
     QueryApplicationPartNumberReply, QueryBootPartNumberReply, QueryDeviceCapabilitiesReply,
     QuerySoftwareCrcReply, QueryValueTableReply, QueryVariantIdReply, QueryVariantNameReply,
     QueryVariantPartNumberReply, Result, SetEscrowTimeoutReply, StartDownloadReply,
@@ -201,6 +201,52 @@ impl ReplyVariant {
             Self::QueryVariantIdReply(msg) => msg.into(),
             _ => OmnibusReply::new(),
         }
+    }
+
+    /// Gets whether [ReplyVariant] contains a `FlashDownloadReply` message.
+    pub fn is_flash_download_reply(&self) -> bool {
+        self.is_flash_download_reply7bit() || self.is_flash_download_reply8bit()
+    }
+
+    /// Gets a reference to the [ReplyVariant] as a [FlashDownloadReply] trait object.
+    pub fn as_flash_download_reply(&self) -> Result<&dyn FlashDownloadReply> {
+        match self {
+            Self::FlashDownloadReply7bit(msg) => Ok(msg),
+            Self::FlashDownloadReply8bit(msg) => Ok(msg),
+            _ => Err(Error::failure(format!(
+                "invalid reply variant, expected FlashDownloadReply, have: {self}"
+            ))),
+        }
+    }
+
+    /// Convenience alias for [is_flash_download_reply8bit()](Self::is_flash_download_reply8bit).
+    pub fn is_flash_download_reply_7bit(&self) -> bool {
+        self.is_flash_download_reply7bit()
+    }
+
+    /// Convenience alias for [as_flash_download_reply7bit()](Self::as_flash_download_reply7bit).
+    pub fn as_flash_download_reply_7bit(&self) -> Result<&FlashDownloadReply7bit> {
+        self.as_flash_download_reply7bit()
+    }
+
+    /// Convenience alias for [into_flash_download_reply7bit()](Self::into_flash_download_reply7bit).
+    pub fn into_flash_download_reply_7bit(self) -> Result<FlashDownloadReply7bit> {
+        self.into_flash_download_reply7bit()
+    }
+
+    /// Convenience alias for [is_flash_download_reply8bit()](Self::is_flash_download_reply8bit).
+    pub fn is_flash_download_reply_8bit(&self) -> bool {
+        self.is_flash_download_reply8bit()
+    }
+
+    /// Convenience alias for [as_flash_download_reply8bit()](Self::as_flash_download_reply8bit).
+    pub fn as_flash_download_reply_8bit(&self) -> Result<&FlashDownloadReply8bit> {
+        self.as_flash_download_reply8bit()
+    }
+
+    /// Convenience alias for [into_flash_download_reply8bit()](Self::into_flash_download_reply8bit).
+    pub fn into_flash_download_reply_8bit(self) -> Result<FlashDownloadReply8bit> {
+        self.into_flash_download_reply8bit()
     }
 
     /// Converts a [ReplyVariant] into a [Banknote].
