@@ -1,5 +1,5 @@
 use crate::{
-    impl_aux_ops, impl_message_ops, len::QUERY_VARIANT_PART_NUMBER_COMMAND, AuxCommand,
+    impl_aux_ops, impl_message_ops, len::QUERY_VARIANT_PART_NUMBER_COMMAND, std::fmt, AuxCommand,
     AuxCommandOps, MessageOps, MessageType,
 };
 
@@ -35,6 +35,17 @@ impl QueryVariantPartNumberCommand {
 
 impl_message_ops!(QueryVariantPartNumberCommand);
 impl_aux_ops!(QueryVariantPartNumberCommand);
+
+impl fmt::Display for QueryVariantPartNumberCommand {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "{{")?;
+        write!(f, r#""acknak": {}, "#, self.acknak())?;
+        write!(f, r#""device_type": {}, "#, self.device_type())?;
+        write!(f, r#""message_type": {}, "#, self.message_type())?;
+        write!(f, r#""aux_command": {}"#, self.aux_command())?;
+        write!(f, "}}")
+    }
+}
 
 #[cfg(test)]
 mod tests {
