@@ -1,12 +1,12 @@
 [package]
 name = "ebds"
-version = "0.4.1"
+version = "0.4.2"
 edition = "2021"
 authors = ["EBDS Rust Developers"]
 description = "Messages and related types for implementing the EBDS serial communication protocol"
 keywords = ["no-std", "serial", "ebds", "bill-acceptor", "bill-validator"]
 categories = ["no-std"]
-repository = "https://github.com/ebds-rs/ebds"
+repository = "https://github.com/decapod-atm/ebds"
 license = "MIT"
 
 [dependencies]
