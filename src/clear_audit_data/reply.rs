@@ -43,8 +43,8 @@ pub mod index {
 /// (represented by 0x00 for byte 10). The device will NAK the host in the following situations:
 ///
 /// * Device is in power up mode.
-/// * A current transaction underway. If a document has been inserted and is being processed, the
-/// device will NAK all Clear Audit Data Request
+/// * A current transaction underway.
+///   * If a document has been inserted and is being processed, the device will NAK all Clear Audit Data Request
 /// * Device is in calibration mode.
 /// * The device is currently servicing another type 7 message request.
 #[repr(C)]

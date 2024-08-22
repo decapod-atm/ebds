@@ -241,11 +241,7 @@ impl BillAcceptorStatusDetails {
     ///
     /// If none is set, returns false
     pub fn cashbox_removed(&self) -> bool {
-        if let Some(ret) = self.cashbox_removed {
-            ret
-        } else {
-            false
-        }
+        self.cashbox_removed.unwrap_or_default()
     }
 
     /// Set whether the cashbox is removed
@@ -307,11 +303,7 @@ impl BillAcceptorStatusDetails {
     ///
     /// If none is set, returns false
     pub fn jammed(&self) -> bool {
-        if let Some(ret) = self.jammed {
-            ret
-        } else {
-            false
-        }
+        self.jammed.unwrap_or_default()
     }
 
     /// Set whether the BAU is jammed
@@ -520,6 +512,17 @@ impl fmt::Display for HardwareStatus {
     }
 }
 
+#[cfg(feature = "std")]
+/// Get the device path from the environment, or return the default path
+pub fn get_device_path(env_key: &str, default_path: &str) -> String {
+    std::env::var(env_key).unwrap_or(default_path.into())
+}
+
+#[cfg(not(feature = "std"))]
+pub fn get_device_path(_env_key: &str, default_path: &str) -> String {
+    default_path.into()
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -632,15 +635,4 @@ mod tests {
 
         Ok(())
     }
-}
-
-#[cfg(feature = "std")]
-/// Get the device path from the environment, or return the default path
-pub fn get_device_path(env_key: &str, default_path: &str) -> String {
-    std::env::var(env_key).unwrap_or(default_path.into())
-}
-
-#[cfg(not(feature = "std"))]
-pub fn get_device_path(_env_key: &str, default_path: &str) -> String {
-    default_path.into()
 }
