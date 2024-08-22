@@ -284,9 +284,9 @@ impl ReplyVariant {
         let exp_msg_type = MessageType::AuxCommand;
 
         if msg_type != exp_msg_type {
-            return Err(Error::failure(
+            return Err(Error::failure(format!(
                 "invalid message type: {msg_type}, expected: {exp_msg_type}",
-            ));
+            )));
         }
 
         match command {
