@@ -715,12 +715,12 @@ mod tests {
             assert_eq!(Exponent::from([i]), exp_def);
 
             for j in 0..=u8::MAX {
-                if i == b'+' && (b'0'..=b'9').contains(&j) {
+                if i == b'+' && j.is_ascii_digit() {
                     assert_eq!(
                         Exponent::from([i, j]),
                         Exponent(std::str::from_utf8(&[j]).unwrap().parse::<u8>().unwrap())
                     );
-                } else if !(b'0'..=b'9').contains(&i) || !(b'0'..=b'9').contains(&j) {
+                } else if !i.is_ascii_digit() || !j.is_ascii_digit() {
                     // Check that values outside the valid range are parsed as the default value
                     assert_eq!(
                         Exponent::from([i, j]),

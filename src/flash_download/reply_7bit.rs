@@ -22,9 +22,9 @@ pub mod index {
 ///
 /// * If the device ACKs the packet, the host should step to the next packet.
 ///
-/// * If the device NAKs the packet, then the host needs to resynchronize with the device. This is
-/// accomplished by changing the block number to the value contained in the reply plus one. An
-/// example is shown below.
+/// * If the device NAKs the packet, then the host needs to resynchronize with the device.
+///   * This is accomplished by changing the block number to the value contained in the reply plus one.
+///   * An example is shown below.
 ///
 /// Example:
 ///

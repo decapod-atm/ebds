@@ -87,12 +87,12 @@ pub mod index {
 ///
 /// ExtendedNoteReply represents a message sent from the device back to the host
 ///
-/// The reply contains 18 additional bytes of data that describe the bank note in great detail. This message
-//// can be sent from the device for two reasons:
+/// The reply contains 18 additional bytes of data that describe the bank note in great detail.
+///
+/// This message can be sent from the device for two reasons:
 ///
 /// * Response to a host’s query extended note command
-/// * Device is running in extended note mode and a valid banknote has either reached escrow or
-/// been stacked.
+/// * Device is running in extended note mode and a valid banknote has either reached escrow or been stacked.
 ///
 /// The Extended Note Reply is formatted as follows:
 ///
